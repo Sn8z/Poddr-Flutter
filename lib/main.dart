@@ -1,67 +1,76 @@
 import 'package:flutter/material.dart';
+import 'package:poddr/components/navigation/sidenav.dart';
+import 'package:go_router/go_router.dart';
+
+// Components
+import 'components/navigation/sidenav.dart';
+
+// Pages
+import 'pages/toplists.dart';
+import 'pages/search.dart';
+import 'pages/favourites.dart';
+import 'pages/settings.dart';
+import 'pages/error.dart';
 
 void main() {
-  runApp(const Poddr());
+  runApp(Poddr());
 }
 
 class Poddr extends StatelessWidget {
-  const Poddr({Key? key}) : super(key: key);
+  Poddr({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Poddr',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-      ),
-      home: const HomePage(title: 'Poddr'),
+      routeInformationParser: _router.routeInformationParser,
+      routerDelegate: _router.routerDelegate,
+      routeInformationProvider: _router.routeInformationProvider,
     );
   }
+
+  final _router = GoRouter(
+    urlPathStrategy: UrlPathStrategy.path,
+    routes: [
+      GoRoute(
+        path: '/',
+        name: 'toplists',
+        builder: (context, state) => const ToplistPage(),
+      ),
+      GoRoute(
+        path: '/search',
+        name: 'search',
+        builder: (context, state) => const SearchPage(),
+      ),
+      GoRoute(
+        path: '/favourites',
+        name: 'favourites',
+        builder: (context, state) => const FavouritesPage(),
+      ),
+      GoRoute(
+        path: '/settings',
+        name: 'settings',
+        builder: (context, state) => const SettingsPage(),
+      ),
+    ],
+    navigatorBuilder: (context, state, child) => BaseWidget(child: child),
+    errorBuilder: (context, state) => ErrorPage(error: state.error!),
+  );
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+class BaseWidget extends StatelessWidget {
+  final Widget child;
+  const BaseWidget({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+      body: Row(
+        children: [
+          const SideNav(),
+          Expanded(child: child),
+        ],
       ),
     );
   }
