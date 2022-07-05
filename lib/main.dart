@@ -17,6 +17,7 @@ import 'pages/settings.dart';
 import 'pages/error.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -53,11 +54,15 @@ class Poddr extends StatelessWidget {
       GoRoute(
         path: '/search',
         name: 'search',
-        pageBuilder: (context, state) => CustomTransitionPage(
-          child: const SearchPage(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              FadeTransition(opacity: animation, child: child),
-        ),
+        pageBuilder: (context, state) {
+          final query = state.queryParams['query'] ?? "";
+          return CustomTransitionPage(
+            child: SearchPage(query: query),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(opacity: animation, child: child),
+          );
+        },
       ),
       GoRoute(
         path: '/favourites',
@@ -79,7 +84,11 @@ class Poddr extends StatelessWidget {
       ),
     ],
     navigatorBuilder: (context, state, child) => BaseWidget(child: child),
-    errorBuilder: (context, state) => ErrorPage(error: state.error!),
+    errorPageBuilder: (context, state) => CustomTransitionPage(
+      child: ErrorPage(error: state.error!),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+          FadeTransition(opacity: animation, child: child),
+    ),
   );
 }
 
