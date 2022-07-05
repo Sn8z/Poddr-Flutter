@@ -36,22 +36,38 @@ class Poddr extends StatelessWidget {
       GoRoute(
         path: '/',
         name: 'toplists',
-        builder: (context, state) => const ToplistPage(),
+        pageBuilder: (context, state) => CustomTransitionPage(
+          child: const ToplistPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
+        ),
       ),
       GoRoute(
         path: '/search',
         name: 'search',
-        builder: (context, state) => const SearchPage(),
+        pageBuilder: (context, state) => CustomTransitionPage(
+          child: const SearchPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
+        ),
       ),
       GoRoute(
         path: '/favourites',
         name: 'favourites',
-        builder: (context, state) => const FavouritesPage(),
+        pageBuilder: (context, state) => CustomTransitionPage(
+          child: const FavouritesPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
+        ),
       ),
       GoRoute(
         path: '/settings',
         name: 'settings',
-        builder: (context, state) => const SettingsPage(),
+        pageBuilder: (context, state) => CustomTransitionPage(
+          child: const SettingsPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
+        ),
       ),
     ],
     navigatorBuilder: (context, state, child) => BaseWidget(child: child),
