@@ -5,6 +5,10 @@ import 'package:go_router/go_router.dart';
 // Components
 import 'components/navigation/sidenav.dart';
 
+// Firebase
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 // Pages
 import 'pages/toplists.dart';
 import 'pages/search.dart';
@@ -12,7 +16,11 @@ import 'pages/favourites.dart';
 import 'pages/settings.dart';
 import 'pages/error.dart';
 
-void main() {
+Future<void> main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(Poddr());
 }
 
