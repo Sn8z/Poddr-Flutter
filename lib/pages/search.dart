@@ -13,14 +13,6 @@ class SearchPage extends StatelessWidget {
       children: [
         const Text("Search"),
         Text(query),
-        ElevatedButton(
-          onPressed: () {
-            String test = "signout";
-            Provider.of<AuthService>(context, listen: false).signOut();
-            print(test);
-          },
-          child: const Text("Test"),
-        ),
       ],
     );
   }

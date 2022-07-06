@@ -29,31 +29,31 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => AuthService(),
-      child: Poddr(),
-    ),
-  );
+  runApp(Poddr());
 }
 
 class Poddr extends StatelessWidget {
   Poddr({Key? key}) : super(key: key);
 
+  final authService = AuthService();
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Poddr',
-      debugShowCheckedModeBanner: false,
-      routeInformationParser: _router.routeInformationParser,
-      routerDelegate: _router.routerDelegate,
-      routeInformationProvider: _router.routeInformationProvider,
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (context) => authService)],
+      child: MaterialApp.router(
+        title: 'Poddr',
+        debugShowCheckedModeBanner: false,
+        routeInformationParser: _router.routeInformationParser,
+        routerDelegate: _router.routerDelegate,
+        routeInformationProvider: _router.routeInformationProvider,
+      ),
     );
   }
 
-  final _router = GoRouter(
+  late final _router = GoRouter(
     urlPathStrategy: UrlPathStrategy.path,
-    refreshListenable: AuthService(),
+    refreshListenable: authService,
     routes: [
       GoRoute(
         path: '/',
@@ -99,13 +99,14 @@ class Poddr extends StatelessWidget {
         path: '/signin',
         name: 'signin',
         pageBuilder: (context, state) => CustomTransitionPage(
-          child: const SignInPage(),
+          child: SignInPage(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) =>
               FadeTransition(opacity: animation, child: child),
         ),
       ),
     ],
-    navigatorBuilder: (context, state, child) => BaseWidget(child: child),
+    navigatorBuilder: (context, state, child) =>
+        authService.isLoggedIn() ? BaseWidget(child: child) : child,
     errorPageBuilder: (context, state) => CustomTransitionPage(
       child: ErrorPage(error: state.error!),
       transitionsBuilder: (context, animation, secondaryAnimation, child) =>
