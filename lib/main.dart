@@ -3,13 +3,16 @@ import 'dart:js';
 import 'package:flutter/material.dart';
 import 'package:poddr/components/navigation/sidenav.dart';
 import 'package:go_router/go_router.dart';
+import 'package:poddr/services/theme_service.dart';
 import 'package:provider/provider.dart';
 
 // Services
 import 'package:poddr/services/auth_service.dart';
 
 // Components
+import 'components/navigation/bottom_nav.dart';
 import 'components/navigation/sidenav.dart';
+import 'components/navigation/siderail.dart';
 
 // Firebase
 import 'package:firebase_core/firebase_core.dart';
@@ -36,17 +39,32 @@ class Poddr extends StatelessWidget {
   Poddr({Key? key}) : super(key: key);
 
   final authService = AuthService();
+  final themeService = ThemeService();
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => authService)],
-      child: MaterialApp.router(
-        title: 'Poddr',
-        debugShowCheckedModeBanner: false,
-        routeInformationParser: _router.routeInformationParser,
-        routerDelegate: _router.routerDelegate,
-        routeInformationProvider: _router.routeInformationProvider,
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => authService,
+          lazy: false,
+        ),
+        ChangeNotifierProvider(
+          create: (_) => themeService,
+          lazy: false,
+        ),
+      ],
+      child: Consumer<ThemeService>(
+        builder: (context, themeService, child) => MaterialApp.router(
+          title: 'Poddr',
+          themeMode: themeService.currentThemeMode,
+          theme: themeService.buildLightTheme(),
+          darkTheme: themeService.buildDarkTheme(),
+          debugShowCheckedModeBanner: false,
+          routeInformationParser: _router.routeInformationParser,
+          routerDelegate: _router.routerDelegate,
+          routeInformationProvider: _router.routeInformationProvider,
+        ),
       ),
     );
   }
@@ -135,11 +153,31 @@ class BaseWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(
-        children: [
-          const SideNav(),
-          Expanded(child: child),
-        ],
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth > 1200) {
+            return Row(
+              children: [
+                const SideNav(),
+                Expanded(child: child),
+              ],
+            );
+          } else if (constraints.maxWidth > 700) {
+            return Row(
+              children: [
+                const SideRail(),
+                Expanded(child: child),
+              ],
+            );
+          } else {
+            return Column(
+              children: [
+                Expanded(child: child),
+                const BottomNav(),
+              ],
+            );
+          }
+        },
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:poddr/components/header.dart';
 import 'package:poddr/services/auth_service.dart';
+import 'package:poddr/services/theme_service.dart';
 import 'package:provider/provider.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -11,14 +12,37 @@ class SettingsPage extends StatelessWidget {
     return Container(
       child: Column(
         children: [
-          Header(),
+          const Header(),
           Expanded(
             child: Column(
               children: [
-                Text("Settings"),
+                const Text("Settings"),
                 Consumer<AuthService>(builder: (context, user, child) {
                   return Text('Username: ${user.fbUser?.email}');
-                })
+                }),
+                MaterialButton(
+                  child: const Text('Dark'),
+                  onPressed: () {
+                    Provider.of<ThemeService>(context, listen: false)
+                        .setSelectedTheme(ThemeMode.dark);
+                  },
+                ),
+                MaterialButton(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  child: const Text('Light'),
+                  onPressed: () {
+                    Provider.of<ThemeService>(context, listen: false)
+                        .setSelectedTheme(ThemeMode.light);
+                  },
+                ),
+                MaterialButton(
+                  child: const Text('System'),
+                  onPressed: () {
+                    Provider.of<ThemeService>(context, listen: false)
+                        .setSelectedTheme(ThemeMode.system);
+                  },
+                ),
+                Text(Provider.of<ThemeService>(context).currentThemeMode.name),
               ],
             ),
           ),
