@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:poddr/components/header.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poddr/services/auth_service.dart';
-import 'package:poddr/services/theme_service.dart';
-import 'package:provider/provider.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends ConsumerWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Center(
+      child: Column(
+        children: [
+          const Text('Settings'),
+          TextButton(
+            child: Text('Toggle Test'),
+            onPressed: () {},
+          ),
+        ],
+      ),
+    );
+    /* return Container(
       child: Column(
         children: [
           const Header(),
@@ -57,5 +66,6 @@ class SettingsPage extends StatelessWidget {
         ],
       ),
     );
+    */
   }
 }

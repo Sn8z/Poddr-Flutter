@@ -27,10 +27,12 @@ class _SideRailState extends State<SideRail> {
       height: screenHeight,
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
-        borderRadius: const BorderRadius.only(
-          bottomRight: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 12.0,
+            blurStyle: BlurStyle.outer,
+          ),
+        ],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,

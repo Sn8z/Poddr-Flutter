@@ -23,8 +23,17 @@ class _SideNavState extends State<SideNav> {
       });
     }
 
-    return SizedBox(
-      width: screenWidth / 5,
+    return Container(
+      width: 250,
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor,
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 12.0,
+            blurStyle: BlurStyle.outer,
+          ),
+        ],
+      ),
       height: screenHeight,
       child: ListView(
         children: [
@@ -32,31 +41,32 @@ class _SideNavState extends State<SideNav> {
             title: const Text("Toplists"),
             leading: const Icon(Icons.list),
             selected: currentLocation == "/" ? true : false,
-            selectedTileColor: Theme.of(context).primaryColor,
             onTap: () => _updateLocation('/'),
           ),
           ListTile(
             title: const Text("Search"),
             leading: const Icon(Icons.search),
             selected: currentLocation == "/search" ? true : false,
-            selectedTileColor: Theme.of(context).primaryColor,
             onTap: () => _updateLocation('/search'),
           ),
           ListTile(
             title: const Text("Favourites"),
             leading: const Icon(Icons.favorite),
             selected: currentLocation == "/favourites" ? true : false,
-            selectedTileColor: Theme.of(context).primaryColor,
             onTap: () => _updateLocation('/favourites'),
           ),
           ListTile(
             title: const Text("Settings"),
             leading: const Icon(Icons.settings),
             selected: currentLocation == "/settings" ? true : false,
-            selectedTileColor: Theme.of(context).primaryColor,
             onTap: () => _updateLocation('/settings'),
           ),
-          Center(child: Text(currentLocation)),
+          Center(
+            child: Card(
+              color: Theme.of(context).backgroundColor,
+              child: Text(currentLocation),
+            ),
+          ),
         ],
       ),
     );

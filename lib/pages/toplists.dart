@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:poddr/components/header.dart';
+import 'package:go_router/go_router.dart';
 
 class ToplistPage extends StatelessWidget {
   const ToplistPage({Key? key}) : super(key: key);
@@ -9,9 +10,14 @@ class ToplistPage extends StatelessWidget {
     return Container(
       child: Column(
         children: [
-          Header(),
+          const Header(),
           Expanded(
-            child: Text("Toplists"),
+            child: Column(
+              children: [
+                const Text("Toplists"),
+                Text(GoRouter.of(context).location),
+              ],
+            ),
           )
         ],
       ),

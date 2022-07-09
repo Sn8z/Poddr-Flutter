@@ -1,30 +1,15 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
-import 'package:poddr/components/navigation/sidenav.dart';
-import 'package:go_router/go_router.dart';
-import 'package:poddr/services/theme_service.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Services
-import 'package:poddr/services/auth_service.dart';
-
-// Components
-import 'components/navigation/bottom_nav.dart';
-import 'components/navigation/sidenav.dart';
-import 'components/navigation/siderail.dart';
+import 'package:poddr/services/theme_service.dart';
 
 // Firebase
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-// Pages
-import 'pages/toplists.dart';
-import 'pages/search.dart';
-import 'pages/favourites.dart';
-import 'pages/settings.dart';
-import 'pages/error.dart';
-import 'pages/signin.dart';
+// Router
+import 'package:poddr/services/router_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,153 +17,30 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(Poddr());
-}
-
-class Poddr extends StatelessWidget {
-  Poddr({Key? key}) : super(key: key);
-
-  final authService = AuthService();
-  final themeService = ThemeService();
-
-  @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => authService,
-          lazy: false,
-        ),
-        ChangeNotifierProvider(
-          create: (_) => themeService,
-          lazy: false,
-        ),
-      ],
-      child: Consumer<ThemeService>(
-        builder: (context, themeService, child) => MaterialApp.router(
-          title: 'Poddr',
-          themeMode: themeService.currentThemeMode,
-          theme: themeService.buildLightTheme(),
-          darkTheme: themeService.buildDarkTheme(),
-          debugShowCheckedModeBanner: false,
-          routeInformationParser: _router.routeInformationParser,
-          routerDelegate: _router.routerDelegate,
-          routeInformationProvider: _router.routeInformationProvider,
-        ),
-      ),
-    );
-  }
-
-  late final _router = GoRouter(
-    urlPathStrategy: UrlPathStrategy.path,
-    refreshListenable: authService,
-    routes: [
-      GoRoute(
-        path: '/',
-        name: 'toplists',
-        pageBuilder: (context, state) => CustomTransitionPage(
-          child: const ToplistPage(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              FadeTransition(opacity: animation, child: child),
-        ),
-      ),
-      GoRoute(
-        path: '/search',
-        name: 'search',
-        pageBuilder: (context, state) {
-          final query = state.queryParams['query'] ?? "";
-          return CustomTransitionPage(
-            child: SearchPage(query: query),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) =>
-                    FadeTransition(opacity: animation, child: child),
-          );
-        },
-      ),
-      GoRoute(
-        path: '/favourites',
-        name: 'favourites',
-        pageBuilder: (context, state) => CustomTransitionPage(
-          child: const FavouritesPage(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              FadeTransition(opacity: animation, child: child),
-        ),
-      ),
-      GoRoute(
-        path: '/settings',
-        name: 'settings',
-        pageBuilder: (context, state) => CustomTransitionPage(
-          child: const SettingsPage(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              FadeTransition(opacity: animation, child: child),
-        ),
-      ),
-      GoRoute(
-        path: '/signin',
-        name: 'signin',
-        pageBuilder: (context, state) => CustomTransitionPage(
-          child: SignInPage(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              FadeTransition(opacity: animation, child: child),
-        ),
-      ),
-    ],
-    navigatorBuilder: (context, state, child) =>
-        authService.isLoggedIn() ? BaseWidget(child: child) : child,
-    errorPageBuilder: (context, state) => CustomTransitionPage(
-      child: ErrorPage(error: state.error!),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-          FadeTransition(opacity: animation, child: child),
+  runApp(
+    ProviderScope(
+      child: Poddr(),
     ),
-    redirect: (state) {
-      // if the user is not logged in, they need to login
-      final loggedIn = AuthService().isLoggedIn();
-      final loggingIn = state.subloc == '/signin';
-      if (!loggedIn) return loggingIn ? null : '/signin';
-
-      // if the user is logged in but still on the login page, send them to
-      // the home page
-      if (loggingIn) return '/';
-
-      // no need to redirect at all
-      return null;
-    },
   );
 }
 
-class BaseWidget extends StatelessWidget {
-  final Widget child;
-  const BaseWidget({Key? key, required this.child}) : super(key: key);
+class Poddr extends ConsumerWidget {
+  Poddr({Key? key}) : super(key: key);
+
+  final themeService = ThemeService();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          if (constraints.maxWidth > 1200) {
-            return Row(
-              children: [
-                const SideNav(),
-                Expanded(child: child),
-              ],
-            );
-          } else if (constraints.maxWidth > 700) {
-            return Row(
-              children: [
-                const SideRail(),
-                Expanded(child: child),
-              ],
-            );
-          } else {
-            return Column(
-              children: [
-                Expanded(child: child),
-                const BottomNav(),
-              ],
-            );
-          }
-        },
-      ),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
+
+    return MaterialApp.router(
+      title: 'Poddr',
+      themeMode: themeService.currentThemeMode,
+      theme: themeService.buildLightTheme(),
+      darkTheme: themeService.buildDarkTheme(),
+      routeInformationParser: router.routeInformationParser,
+      routerDelegate: router.routerDelegate,
+      routeInformationProvider: router.routeInformationProvider,
     );
   }
 }

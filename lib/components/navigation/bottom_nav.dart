@@ -27,9 +27,15 @@ class _BottomNavState extends State<BottomNav> {
       height: 60,
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 12.0,
+            blurStyle: BlurStyle.outer,
+          ),
+        ],
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+          topLeft: Radius.circular(12),
+          topRight: Radius.circular(12),
         ),
       ),
       child: Row(

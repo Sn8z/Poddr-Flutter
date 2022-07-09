@@ -14,6 +14,7 @@ class ThemeService with ChangeNotifier {
       brightness: Brightness.light,
       primarySwatch: Colors.red,
       primaryColor: Colors.red[400],
+      fontFamily: 'Manrope',
     );
   }
 
@@ -22,6 +23,7 @@ class ThemeService with ChangeNotifier {
       brightness: Brightness.dark,
       primarySwatch: Colors.amber,
       primaryColor: Colors.orange[200],
+      fontFamily: 'Manrope',
     );
   }
 }
