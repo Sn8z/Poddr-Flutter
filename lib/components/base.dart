@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:poddr/components/player/desktop_player.dart';
+import 'package:poddr/components/player/mobile_player.dart';
 
 // Components & Helpers
 import 'package:poddr/helpers/breakpoints.dart';
@@ -20,20 +22,38 @@ class BaseWidget extends StatelessWidget {
               return Row(
                 children: [
                   const SideNav(),
-                  Expanded(child: child),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: child,
+                          flex: 1,
+                        ),
+                        DesktopPlayer(),
+                      ],
+                    ),
+                  ),
                 ],
               );
             } else if (constraints.maxWidth > Breakpoints.tabletScreen) {
               return Row(
                 children: [
                   const SideRail(),
-                  Expanded(child: child),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Expanded(child: child),
+                        DesktopPlayer(),
+                      ],
+                    ),
+                  ),
                 ],
               );
             } else {
               return Column(
                 children: [
                   Expanded(child: child),
+                  const MobilePlayer(),
                   const BottomNav(),
                 ],
               );

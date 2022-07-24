@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 // Services
 import 'package:poddr/services/theme_service.dart';
@@ -13,31 +14,36 @@ import 'package:poddr/services/router_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  bool isLinuxOrWin = UniversalPlatform.isLinux | UniversalPlatform.isWindows;
+  print('Is Linux or win? -> ' + isLinuxOrWin.toString());
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+    options: isLinuxOrWin
+        ? DefaultFirebaseOptions.web
+        : DefaultFirebaseOptions.currentPlatform,
   );
 
   runApp(
-    ProviderScope(
+    const ProviderScope(
       child: Poddr(),
     ),
   );
 }
 
 class Poddr extends ConsumerWidget {
-  Poddr({Key? key}) : super(key: key);
-
-  final themeService = ThemeService();
+  const Poddr({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
+    final themes = ref.watch(themeDataProvider);
+    final themeMode = ref.watch(themeModeProvider);
 
     return MaterialApp.router(
       title: 'Poddr',
-      themeMode: themeService.currentThemeMode,
-      theme: themeService.buildLightTheme(),
-      darkTheme: themeService.buildDarkTheme(),
+      themeMode: themeMode,
+      theme: themes.lightTheme,
+      darkTheme: themes.darkTheme,
       routeInformationParser: router.routeInformationParser,
       routerDelegate: router.routerDelegate,
       routeInformationProvider: router.routeInformationProvider,

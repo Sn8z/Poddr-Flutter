@@ -35,9 +35,19 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   go_router: ^4.0.0
-  firebase_core: ^1.19.1
+  firebase_core: ^1.18.0
   firebase_auth: ^3.4.1
+  universal_platform: ^1.0.0+1
+  firebase_core_desktop: ^1.0.0
+  firebase_auth_desktop: ^1.0.0
   flutter_riverpod: ^1.0.4
+  http: ^0.13.4
+  podcast_search: ^0.5.1
+  audioplayers: ^1.0.1
+  just_audio: ^0.9.28
+  just_audio_mpv: ^0.1.4
+  just_audio_windows: ^0.1.0
+  audio_session: ^0.1.10
 
 dev_dependencies:
   flutter_test:

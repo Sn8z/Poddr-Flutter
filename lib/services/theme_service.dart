@@ -1,29 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:math';
 
-class ThemeService with ChangeNotifier {
-  ThemeMode currentThemeMode = ThemeMode.system;
+class ThemeModeNotifier extends StateNotifier<ThemeMode> {
+  ThemeModeNotifier() : super(ThemeMode.dark);
 
-  void setSelectedTheme(ThemeMode themeMode) {
-    currentThemeMode = themeMode;
-    print(currentThemeMode.toString());
-    notifyListeners();
+  void setDarkMode() {
+    state = ThemeMode.dark;
   }
 
-  ThemeData buildLightTheme() {
-    return ThemeData(
-      brightness: Brightness.light,
-      primarySwatch: Colors.red,
-      primaryColor: Colors.red[400],
-      fontFamily: 'Manrope',
-    );
+  void setLightMode() {
+    state = ThemeMode.light;
   }
 
-  ThemeData buildDarkTheme() {
-    return ThemeData(
-      brightness: Brightness.dark,
-      primarySwatch: Colors.amber,
-      primaryColor: Colors.orange[200],
-      fontFamily: 'Manrope',
-    );
+  void toggleMode() {
+    state = state == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
   }
 }
+
+final themeModeProvider =
+    StateNotifierProvider<ThemeModeNotifier, ThemeMode>((ref) {
+  return ThemeModeNotifier();
+});
+
+ThemeData defaultLightTheme = ThemeData(
+  brightness: Brightness.light,
+  primarySwatch: Colors.red,
+  primaryColor: Colors.red[400],
+  fontFamily: 'Manrope',
+);
+
+ThemeData defaultDarkTheme = ThemeData(
+  brightness: Brightness.dark,
+  primarySwatch: Colors.amber,
+  primaryColor: Colors.orange[200],
+  fontFamily: 'Manrope',
+);
+
+class Themes {
+  final ThemeData darkTheme;
+  final ThemeData lightTheme;
+  Themes({required this.darkTheme, required this.lightTheme});
+}
+
+class ThemeDataNotifier extends StateNotifier<Themes> {
+  ThemeDataNotifier()
+      : super(Themes(
+          darkTheme: defaultDarkTheme,
+          lightTheme: defaultLightTheme,
+        ));
+
+  void updateColor() {
+    Random rnd = Random();
+    Color clr = Color.fromRGBO(
+      rnd.nextInt(255),
+      rnd.nextInt(255),
+      rnd.nextInt(255),
+      1,
+    );
+    ThemeData dTheme = state.darkTheme.copyWith(primaryColor: clr);
+    ThemeData lTheme = state.lightTheme.copyWith(primaryColor: clr);
+    state = Themes(darkTheme: dTheme, lightTheme: lTheme);
+  }
+}
+
+final themeDataProvider =
+    StateNotifierProvider<ThemeDataNotifier, Themes>((ref) {
+  return ThemeDataNotifier();
+});

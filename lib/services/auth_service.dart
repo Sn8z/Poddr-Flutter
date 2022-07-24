@@ -10,10 +10,6 @@ final userProvider = StreamProvider<User?>(
   (ref) => ref.watch(authProvider).userStream,
 );
 
-final isLoggedInProvider = StateProvider<bool>(
-  (ref) => ref.watch(authProvider).isLoggedIn(),
-);
-
 class AuthService with ChangeNotifier {
   final FirebaseAuth fbAuth = FirebaseAuth.instance;
   User? fbUser;
@@ -42,8 +38,15 @@ class AuthService with ChangeNotifier {
     print("Auth sign in -");
     try {
       await fbAuth.signInWithEmailAndPassword(email: email, password: password);
-    } catch (e) {
-      print(e);
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
+      print(e.message);
+      switch (e.code) {
+        case "invalid-email":
+          {
+            return null;
+          }
+      }
     }
   }
 

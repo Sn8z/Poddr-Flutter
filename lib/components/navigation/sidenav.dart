@@ -26,7 +26,7 @@ class _SideNavState extends State<SideNav> {
     return Container(
       width: 250,
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
+        color: Theme.of(context).navigationBarTheme.backgroundColor,
         boxShadow: const [
           BoxShadow(
             blurRadius: 12.0,
@@ -35,37 +35,58 @@ class _SideNavState extends State<SideNav> {
         ],
       ),
       height: screenHeight,
-      child: ListView(
+      child: Column(
         children: [
-          ListTile(
-            title: const Text("Toplists"),
-            leading: const Icon(Icons.list),
-            selected: currentLocation == "/" ? true : false,
-            onTap: () => _updateLocation('/'),
+          Text(
+            "Poddr",
+            style: Theme.of(context).textTheme.headline3,
           ),
-          ListTile(
-            title: const Text("Search"),
-            leading: const Icon(Icons.search),
-            selected: currentLocation == "/search" ? true : false,
-            onTap: () => _updateLocation('/search'),
+          Divider(
+            color: Theme.of(context).primaryColor,
+            thickness: 1,
+            endIndent: 12,
+            indent: 12,
           ),
-          ListTile(
-            title: const Text("Favourites"),
-            leading: const Icon(Icons.favorite),
-            selected: currentLocation == "/favourites" ? true : false,
-            onTap: () => _updateLocation('/favourites'),
-          ),
-          ListTile(
-            title: const Text("Settings"),
-            leading: const Icon(Icons.settings),
-            selected: currentLocation == "/settings" ? true : false,
-            onTap: () => _updateLocation('/settings'),
-          ),
-          Center(
-            child: Card(
-              color: Theme.of(context).backgroundColor,
-              child: Text(currentLocation),
+          Expanded(
+            child: ListView(
+              children: [
+                ListTile(
+                  title: const Text("Toplists"),
+                  leading: const Icon(Icons.list),
+                  selected: currentLocation == "/" ? true : false,
+                  onTap: () => _updateLocation('/'),
+                ),
+                ListTile(
+                  title: const Text("Search"),
+                  leading: const Icon(Icons.search),
+                  selected: currentLocation == "/search" ? true : false,
+                  onTap: () => _updateLocation('/search'),
+                ),
+                ListTile(
+                  title: const Text("Favourites"),
+                  leading: const Icon(Icons.favorite),
+                  selected: currentLocation == "/favourites" ? true : false,
+                  onTap: () => _updateLocation('/favourites'),
+                ),
+                ListTile(
+                  title: const Text("Settings"),
+                  leading: const Icon(Icons.settings),
+                  selected: currentLocation == "/settings" ? true : false,
+                  onTap: () => _updateLocation('/settings'),
+                ),
+                Center(
+                  child: Text(
+                    currentLocation,
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                ),
+              ],
             ),
+          ),
+          Image.network(
+            'https://podmestorage.blob.core.windows.net/podcast-images/F9378BFC404B1498E9E491524DDA7A2C_medium.jpg',
+            fit: BoxFit.fill,
+            filterQuality: FilterQuality.high,
           ),
         ],
       ),
