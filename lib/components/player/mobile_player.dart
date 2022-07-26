@@ -8,67 +8,65 @@ class MobilePlayer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final player = ref.watch(playbackProvider);
+    double playerProgress =
+        player.position.inSeconds.toInt() / player.duration.inSeconds.toInt();
+    playerProgress = playerProgress.isNaN ? 0.0 : playerProgress;
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).dialogBackgroundColor,
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 12.0,
-            blurStyle: BlurStyle.outer,
-          ),
-        ],
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
-      margin: const EdgeInsets.all(8),
-      padding: const EdgeInsets.all(8),
       child: Column(
         children: [
-          Row(
-            children: [
-              Text(player.currentPodcast),
-              const Text(" - "),
-              Text(player.currentEpisode),
-            ],
+          LinearProgressIndicator(
+            value: playerProgress,
           ),
-          Row(
-            children: [
-              Expanded(
-                child: SliderTheme(
-                  data: SliderThemeData(
-                    activeTrackColor: Colors.green,
-                    thumbColor: Colors.red,
-                  ),
-                  child: Slider(
-                    min: 0.0,
-                    max: player.duration.inSeconds.toDouble(),
-                    value: player.position.inSeconds.toDouble(),
-                    onChanged: (double v) {
-                      ref.read(playbackProvider.notifier).seek(v.toInt());
-                    },
-                    onChangeStart: (_) {},
-                    onChangeEnd: (_) {},
-                  ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    player.isPlaying
+                        ? IconButton(
+                            onPressed: () {
+                              ref.read(playbackProvider.notifier).pause();
+                            },
+                            icon: const Icon(Icons.pause_circle),
+                          )
+                        : IconButton(
+                            onPressed: () {
+                              ref.read(playbackProvider.notifier).play();
+                            },
+                            icon: const Icon(Icons.play_arrow),
+                          ),
+                    Visibility(
+                        visible: player.isLoading,
+                        child: CircularProgressIndicator()),
+                  ],
                 ),
-              ),
-            ],
+                Column(
+                  children: [
+                    Text(
+                      player.currentPodcast,
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    Text(player.currentEpisode),
+                  ],
+                ),
+                Image.network(
+                  'https://podmestorage.blob.core.windows.net/podcast-images/F9378BFC404B1498E9E491524DDA7A2C_medium.jpg',
+                  fit: BoxFit.contain,
+                  height: 20,
+                ),
+                // const FlutterLogo()
+              ],
+            ),
           ),
-          Row(children: [
-            IconButton(
-              onPressed: () {
-                ref.read(playbackProvider.notifier).play();
-              },
-              icon: const Icon(Icons.play_arrow),
-            ),
-            IconButton(
-              onPressed: () {
-                ref.read(playbackProvider.notifier).pause();
-              },
-              icon: const Icon(Icons.pause_circle),
-            ),
-            Text(player.isPlaying.toString()),
-            Text(player.duration.toString()),
-            Text(player.position.toString()),
-          ]),
         ],
       ),
     );

@@ -16,10 +16,8 @@ import 'package:poddr/components/base.dart';
 // Providers
 import 'auth_service.dart';
 
-/// Caches and Exposes a [GoRouter]
 final routerProvider = Provider<GoRouter>((ref) {
   final router = RouterNotifier(ref);
-
   return GoRouter(
     debugLogDiagnostics: true,
     refreshListenable: router,
@@ -55,7 +53,7 @@ class RouterNotifier extends ChangeNotifier {
           path: '/',
           name: 'toplists',
           pageBuilder: (context, state) => CustomTransitionPage(
-            child: const ToplistPage(),
+            child: ToplistPage(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) =>
                     FadeTransition(opacity: animation, child: child),

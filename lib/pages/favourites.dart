@@ -17,7 +17,9 @@ class _FavouritesPageState extends State<FavouritesPage> {
       if (constraints.maxWidth > Breakpoints.tabletScreen) {
         return Column(
           children: [
-            const Header(),
+            const Header(
+              title: 'Favourites',
+            ),
             Expanded(
               child: GridView.count(
                 childAspectRatio: 0.8,
@@ -41,7 +43,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
                       child: Column(
                         children: [
                           Image.network(
-                            'https://www.udiscovermusic.com/wp-content/uploads/2017/08/Pink-Floyd-Dark-Side-Of-The-Moon.jpg',
+                            'https://podmestorage.blob.core.windows.net/podcast-images/F9378BFC404B1498E9E491524DDA7A2C_medium.jpg',
                             fit: BoxFit.fitWidth,
                           ),
                           Text(
@@ -60,6 +62,9 @@ class _FavouritesPageState extends State<FavouritesPage> {
       } else {
         return Column(
           children: [
+            const Header(
+              title: 'Favourites',
+            ),
             Expanded(
               child: ListView(
                 children: List.generate(100, (index) {

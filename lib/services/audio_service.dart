@@ -1,6 +1,7 @@
 import 'package:just_audio/just_audio.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 
 final playerProvider = Provider<AudioPlayer>((ProviderRef ref) {
   return AudioPlayer();
@@ -9,6 +10,7 @@ final playerProvider = Provider<AudioPlayer>((ProviderRef ref) {
 class PlaybackState {
   PlaybackState({
     this.isPlaying = false,
+    this.isLoading = false,
     this.volume = 0.8,
     this.playbackRate = 1.0,
     this.duration = Duration.zero,
@@ -18,6 +20,7 @@ class PlaybackState {
   });
 
   final bool isPlaying;
+  final bool isLoading;
   final double volume;
   final double playbackRate;
   final Duration duration;
@@ -27,6 +30,7 @@ class PlaybackState {
 
   PlaybackState copyWith({
     bool? isPlaying,
+    bool? isLoading,
     double? volume,
     double? playbackRate,
     Duration? duration,
@@ -36,6 +40,7 @@ class PlaybackState {
   }) {
     return PlaybackState(
       isPlaying: isPlaying ?? this.isPlaying,
+      isLoading: isLoading ?? this.isLoading,
       volume: volume ?? this.volume,
       playbackRate: playbackRate ?? this.playbackRate,
       duration: duration ?? this.duration,
@@ -65,7 +70,11 @@ class PlaybackNotifier extends StateNotifier<PlaybackState> {
     await player.setLoopMode(LoopMode.off);
     await player.setSpeed(state.playbackRate);
 
-    loadAudio();
+    loadAudio(
+        podcast: 'Avicii',
+        episode: 'Episode 03',
+        url:
+            'https://media.rawvoice.com/officialaviciipodcast/media2-av.podtree.com/media/podcast/AVICII_FM_008.m4a');
 
     player.durationStream.listen((Duration? dur) {
       print('Max duration: $dur');
@@ -82,47 +91,69 @@ class PlaybackNotifier extends StateNotifier<PlaybackState> {
         print('Player is Playing!');
         state = state.copyWith(isPlaying: true);
       } else {
-        switch (playerState.processingState) {
-          case ProcessingState.idle:
-            print('Player is Idle!');
-            state = state.copyWith(isPlaying: false);
-            break;
-          case ProcessingState.loading:
-            print('Player is Loading!');
-            state = state.copyWith(isPlaying: false);
-            break;
-          case ProcessingState.buffering:
-            print('Player is Buffering!');
-            state = state.copyWith(isPlaying: false);
-            break;
-          case ProcessingState.ready:
-            print('Player is Ready!');
-            state = state.copyWith(isPlaying: false);
-            break;
-          case ProcessingState.completed:
-            print('Player is Completed!');
-            state = state.copyWith(isPlaying: false);
-            break;
-        }
+        state = state.copyWith(isPlaying: false);
+      }
+
+      switch (playerState.processingState) {
+        case ProcessingState.idle:
+          print('Player is Idle!');
+          break;
+        case ProcessingState.loading:
+          print('Player is Loading!');
+          state = state.copyWith(isLoading: true);
+          break;
+        case ProcessingState.buffering:
+          print('Player is Buffering!');
+          state = state.copyWith(isLoading: true);
+          break;
+        case ProcessingState.ready:
+          print('Player is Ready!');
+          state = state.copyWith(isLoading: false);
+          break;
+        case ProcessingState.completed:
+          print('Player is Completed!');
+          state = state.copyWith(
+            isPlaying: false,
+            position: Duration.zero,
+          );
+          break;
+        default:
+          break;
       }
     });
 
     player.playbackEventStream.listen((PlaybackEvent event) {
       print(event);
-    }, onError: (Object e) {
+    }, onError: (Object e, StackTrace st) {
+      player.stop();
       if (e is PlayerException) {
         print('Error code: ${e.code}');
         print('Error message: ${e.message}');
       } else {
         print('An error occurred: $e');
       }
+      return 0;
     });
   }
 
-  void loadAudio() async {
+  void loadAudio(
+      {String podcast = "Podcast",
+      String episode = "Episode",
+      required String url}) async {
     try {
-      final AudioSource audioSource = AudioSource.uri(Uri.parse(
-          'https://media.rawvoice.com/officialaviciipodcast/media2-av.podtree.com/media/podcast/AVICII_FM_008.m4a'));
+      state = state.copyWith(
+        currentPodcast: podcast,
+        currentEpisode: episode,
+      );
+      final AudioSource audioSource = AudioSource.uri(Uri.parse(url),
+          tag: MediaItem(
+            id: '1',
+            title: episode,
+            album: podcast,
+            artist: 'Poddr',
+            artUri: Uri.parse(
+                'https://podmestorage.blob.core.windows.net/podcast-images/F9378BFC404B1498E9E491524DDA7A2C_medium.jpg'),
+          ));
       await player.setAudioSource(audioSource);
     } on PlayerException catch (e) {
       print("Error code: ${e.code}");

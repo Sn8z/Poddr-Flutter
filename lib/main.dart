@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 // Services
@@ -14,6 +15,12 @@ import 'package:poddr/services/router_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.sn8z.poddr.channel.audio',
+    androidNotificationChannelName: 'Audio playback',
+    androidNotificationOngoing: true,
+  );
 
   bool isLinuxOrWin = UniversalPlatform.isLinux | UniversalPlatform.isWindows;
   print('Is Linux or win? -> ' + isLinuxOrWin.toString());

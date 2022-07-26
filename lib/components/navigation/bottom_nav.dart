@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:poddr/services/router_service.dart';
 
 class BottomNav extends ConsumerWidget {
   const BottomNav({Key? key}) : super(key: key);
@@ -10,8 +9,6 @@ class BottomNav extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     double screenWidth = MediaQuery.of(context).size.width;
 
-    final String currentLocation = ref.read(routerProvider).location;
-
     void _updateLocation(String location) {
       context.go(location);
     }
@@ -19,43 +16,68 @@ class BottomNav extends ConsumerWidget {
     return Container(
       width: screenWidth,
       height: 60,
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        boxShadow: const [
+      decoration: const BoxDecoration(
+        color: Color.fromARGB(255, 35, 35, 35),
+        boxShadow: [
           BoxShadow(
             blurRadius: 12.0,
             blurStyle: BlurStyle.outer,
           ),
         ],
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(12),
-          topRight: Radius.circular(12),
-        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Text(currentLocation),
           IconButton(
+            iconSize: 28,
             onPressed: () => _updateLocation('/'),
-            icon: const Icon(Icons.list),
+            icon: ShaderMask(
+              shaderCallback: (Rect bounds) {
+                return const LinearGradient(
+                  begin: Alignment.bottomLeft,
+                  colors: [Colors.orange, Colors.deepOrange],
+                ).createShader(bounds);
+              },
+              blendMode: BlendMode.srcATop,
+              child: const Icon(Icons.podcasts_outlined),
+            ),
           ),
           IconButton(
+            iconSize: 28,
             onPressed: () => _updateLocation('/search'),
-            icon: const Icon(Icons.settings),
+            icon: ShaderMask(
+              shaderCallback: (Rect bounds) {
+                return const LinearGradient(
+                  begin: Alignment.bottomLeft,
+                  colors: [Colors.blue, Colors.blueAccent],
+                ).createShader(bounds);
+              },
+              blendMode: BlendMode.srcATop,
+              child: const Icon(Icons.search),
+            ),
           ),
           IconButton(
+            iconSize: 28,
             onPressed: () => _updateLocation('/favourites'),
-            icon: const Icon(Icons.heart_broken),
+            icon: ShaderMask(
+              shaderCallback: (Rect bounds) {
+                return const LinearGradient(
+                  begin: Alignment.bottomLeft,
+                  colors: [Colors.redAccent, Colors.red],
+                ).createShader(bounds);
+              },
+              blendMode: BlendMode.srcATop,
+              child: const Icon(Icons.favorite),
+            ),
           ),
           IconButton(
-            iconSize: 42,
+            iconSize: 28,
             onPressed: () => _updateLocation('/settings'),
             icon: ShaderMask(
               shaderCallback: (Rect bounds) {
                 return const LinearGradient(
                   begin: Alignment.bottomLeft,
-                  colors: [Colors.orange, Colors.grey],
+                  colors: [Colors.yellow, Colors.yellowAccent],
                 ).createShader(bounds);
               },
               blendMode: BlendMode.srcATop,

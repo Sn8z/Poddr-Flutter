@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:poddr/components/inputField.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:podcast_search/podcast_search.dart';
+import 'package:poddr/components/header.dart';
+import 'package:poddr/components/inputField.dart';
 
-class SearchPage extends StatefulWidget {
-  final String query;
-  final Search search = Search();
-  bool isLoading = false;
-
+class SearchPage extends ConsumerStatefulWidget {
   SearchPage({Key? key, this.query = ""}) : super(key: key);
 
+  final Search podcastSearch = Search();
+  String query;
+
   @override
-  State<SearchPage> createState() => _SearchPageState();
+  ConsumerState<SearchPage> createState() => _SearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _SearchPageState extends ConsumerState<SearchPage> {
+  SearchResult result = SearchResult();
+  bool isLoading = false;
+  TextEditingController searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController searchController = TextEditingController();
     return Column(
       children: [
+        Header(title: 'Search'),
         CustomInputField(
           hint: "Search",
           textController: searchController,
@@ -30,13 +35,22 @@ class _SearchPageState extends State<SearchPage> {
             search(value);
           },
         ),
-        Text(widget.query),
+        Text(searchController.text),
+        Expanded(
+          child: ListView(
+              children: List.generate(result.resultCount, (index) {
+            return Text(result.items[index].artistName!);
+          })),
+        )
       ],
     );
   }
 
-  void search(String query) async {
-    final SearchResult result = await widget.search.search(query);
-    print(result);
+  void search(query) async {
+    SearchResult sr = await widget.podcastSearch.search(query);
+    print(sr.toString());
+    setState(() {
+      result = sr;
+    });
   }
 }

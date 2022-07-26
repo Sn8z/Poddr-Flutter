@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:poddr/services/api_test.dart';
-import 'package:poddr/services/auth_service.dart';
+import 'package:poddr/components/header.dart';
 import 'package:poddr/services/theme_service.dart';
 
 class SettingsPage extends ConsumerWidget {
@@ -9,17 +8,13 @@ class SettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    AsyncValue users = ref.watch(userAPI);
     return Center(
       child: Column(
         children: [
+          const Header(
+            title: 'Settings',
+          ),
           const Text('Settings'),
-          users.when(
-              loading: () => const CircularProgressIndicator(),
-              error: (e, s) => Text('ERROR'),
-              data: (users) {
-                return Text(users);
-              }),
           TextButton(
             child: Text('Set light mode'),
             onPressed: () {

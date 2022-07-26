@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:poddr/services/auth_service.dart';
 
 class Header extends StatefulWidget {
-  const Header({Key? key}) : super(key: key);
+  const Header({Key? key, required this.title}) : super(key: key);
+
+  final String title;
 
   @override
   State<Header> createState() => _HeaderState();
@@ -18,9 +20,9 @@ class _HeaderState extends State<Header> {
     return Container(
       height: 80,
       width: screenWidth,
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColorDark,
-        boxShadow: const [
+      decoration: const BoxDecoration(
+        color: Color.fromARGB(255, 30, 30, 30),
+        boxShadow: [
           BoxShadow(
             offset: Offset(10, 0),
             blurRadius: 12.0,
@@ -39,8 +41,8 @@ class _HeaderState extends State<Header> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  "Headline",
-                  style: Theme.of(context).textTheme.headline4,
+                  widget.title,
+                  style: Theme.of(context).textTheme.headline5,
                 ),
               ],
             ),
