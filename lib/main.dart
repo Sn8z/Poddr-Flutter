@@ -16,11 +16,13 @@ import 'package:poddr/services/router_service.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await JustAudioBackground.init(
-    androidNotificationChannelId: 'com.sn8z.poddr.channel.audio',
-    androidNotificationChannelName: 'Audio playback',
-    androidNotificationOngoing: true,
-  );
+  if (UniversalPlatform.isAndroid | UniversalPlatform.isIOS) {
+    await JustAudioBackground.init(
+      androidNotificationChannelId: 'com.sn8z.poddr.channel.audio',
+      androidNotificationChannelName: 'Audio playback',
+      androidNotificationOngoing: true,
+    );
+  }
 
   bool isLinuxOrWin = UniversalPlatform.isLinux | UniversalPlatform.isWindows;
   print('Is Linux or win? -> ' + isLinuxOrWin.toString());

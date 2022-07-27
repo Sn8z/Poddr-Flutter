@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:podcast_search/podcast_search.dart';
 import 'package:poddr/components/header.dart';
 import 'package:poddr/components/inputField.dart';
+import 'package:poddr/services/audio_service.dart';
 
 class SearchPage extends ConsumerStatefulWidget {
   SearchPage({Key? key, this.query = ""}) : super(key: key);
@@ -23,7 +25,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Header(title: 'Search'),
+        const Header(title: 'Search'),
         CustomInputField(
           hint: "Search",
           textController: searchController,
@@ -39,7 +41,20 @@ class _SearchPageState extends ConsumerState<SearchPage> {
         Expanded(
           child: ListView(
               children: List.generate(result.resultCount, (index) {
-            return Text(result.items[index].artistName!);
+            final Item podcast = result.items[index];
+            return GestureDetector(
+              onTap: () {
+                debugPrint("Clicked ${podcast.feedUrl}");
+                context.go("/podcast/${podcast.feedUrl}");
+              },
+              child: Card(
+                child: ListTile(
+                  leading: Image.network(podcast.bestArtworkUrl ?? ""),
+                  title: Text(podcast.artistName ?? "Artist"),
+                  subtitle: Text(podcast.trackName ?? "Track"),
+                ),
+              ),
+            );
           })),
         )
       ],

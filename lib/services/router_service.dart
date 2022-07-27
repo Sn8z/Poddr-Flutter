@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 // Pages
 import 'package:poddr/pages/error.dart';
 import 'package:poddr/pages/favourites.dart';
+import 'package:poddr/pages/podcast.dart';
 import 'package:poddr/pages/search.dart';
 import 'package:poddr/pages/settings.dart';
 import 'package:poddr/pages/signin.dart';
@@ -66,6 +67,19 @@ class RouterNotifier extends ChangeNotifier {
             final query = state.queryParams['query'] ?? "";
             return CustomTransitionPage(
               child: SearchPage(query: query),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) =>
+                      FadeTransition(opacity: animation, child: child),
+            );
+          },
+        ),
+        GoRoute(
+          path: '/podcast/:podcastUrl',
+          name: 'podcast',
+          pageBuilder: (context, state) {
+            final String url = state.params['podcastUrl'] ?? "";
+            return CustomTransitionPage(
+              child: PodcastPage(url: url),
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) =>
                       FadeTransition(opacity: animation, child: child),

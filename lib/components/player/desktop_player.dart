@@ -8,26 +8,39 @@ class DesktopPlayer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final player = ref.watch(playbackProvider);
+
     return Container(
-      color: Colors.cyan,
-      child: Column(
+      color: Theme.of(context).cardColor,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
+          Stack(
+            alignment: Alignment.center,
             children: [
-              Text(player.currentPodcast),
-              const Text(" - "),
-              Text(player.currentEpisode),
+              player.isPlaying
+                  ? IconButton(
+                      onPressed: () {
+                        ref.read(playbackProvider.notifier).pause();
+                      },
+                      icon: const Icon(Icons.pause_circle),
+                    )
+                  : IconButton(
+                      onPressed: () {
+                        ref.read(playbackProvider.notifier).play();
+                      },
+                      icon: const Icon(Icons.play_arrow),
+                    ),
+              Visibility(
+                  visible: player.isLoading,
+                  child: CircularProgressIndicator()),
             ],
           ),
-          Row(
+          Column(
             children: [
-              Expanded(
-                child: SliderTheme(
-                  data: SliderThemeData(
-                    activeTrackColor: Colors.green,
-                    thumbColor: Colors.red,
-                  ),
-                  child: Slider(
+              Row(
+                children: [
+                  Text(player.position.toString()),
+                  Slider(
                     min: 0.0,
                     max: player.duration.inSeconds.toDouble(),
                     value: player.position.inSeconds.toDouble(),
@@ -35,28 +48,16 @@ class DesktopPlayer extends ConsumerWidget {
                       ref.read(playbackProvider.notifier).seek(v.toInt());
                     },
                   ),
-                ),
+                  Text(player.duration.toString()),
+                ],
               ),
+              Text(player.currentPodcast),
+              Text(player.currentEpisode),
             ],
           ),
-          Row(children: [
-            IconButton(
-              onPressed: () {
-                ref.read(playbackProvider.notifier).play();
-              },
-              icon: const Icon(Icons.play_arrow),
-            ),
-            IconButton(
-              onPressed: () {
-                ref.read(playbackProvider.notifier).pause();
-              },
-              icon: const Icon(Icons.pause_circle),
-            ),
-            Text(player.isPlaying.toString()),
-            Text(player.duration.toString()),
-            Text(player.position.toString()),
-            Expanded(
-              child: Slider(
+          Column(
+            children: [
+              Slider(
                 min: 0.0,
                 max: 1.0,
                 value: player.volume,
@@ -64,8 +65,8 @@ class DesktopPlayer extends ConsumerWidget {
                   ref.read(playbackProvider.notifier).setVolume(v);
                 },
               ),
-            ),
-          ]),
+            ],
+          ),
         ],
       ),
     );

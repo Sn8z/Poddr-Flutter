@@ -181,7 +181,11 @@ class PlaybackNotifier extends StateNotifier<PlaybackState> {
 
   void seek(int seekPos) async {
     print('AudioService seeking');
-    await player.seek(Duration(seconds: seekPos));
+    try {
+      await player.seek(Duration(seconds: seekPos));
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   void setSpeed(double rate) async {
