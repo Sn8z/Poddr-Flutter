@@ -11,19 +11,15 @@ class SideNav extends StatefulWidget {
 class _SideNavState extends State<SideNav> {
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-
     String currentLocation = GoRouter.of(context).location;
 
     void _updateLocation(String location) {
       context.go(location);
-      setState(() {
-        currentLocation = GoRouter.of(context).location;
-      });
     }
 
     return Container(
       width: 250,
+      height: double.infinity,
       decoration: BoxDecoration(
         color: Theme.of(context).navigationBarTheme.backgroundColor,
         boxShadow: const [
@@ -33,7 +29,6 @@ class _SideNavState extends State<SideNav> {
           ),
         ],
       ),
-      height: screenHeight,
       child: Column(
         children: [
           Padding(
@@ -104,19 +99,12 @@ class _SideNavState extends State<SideNav> {
                   selected: currentLocation == "/settings" ? true : false,
                   onTap: () => _updateLocation('/settings'),
                 ),
-                Center(
-                  child: Text(
-                    currentLocation,
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                ),
               ],
             ),
           ),
           Image.network(
             'https://podmestorage.blob.core.windows.net/podcast-images/F9378BFC404B1498E9E491524DDA7A2C_medium.jpg',
             fit: BoxFit.fill,
-            filterQuality: FilterQuality.high,
           ),
         ],
       ),

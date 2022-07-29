@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poddr/services/audio_service.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class DesktopPlayer extends ConsumerWidget {
   const DesktopPlayer({Key? key}) : super(key: key);
@@ -15,7 +16,7 @@ class DesktopPlayer extends ConsumerWidget {
       padding: const EdgeInsets.all(12.0),
       child: Container(
         decoration: const BoxDecoration(
-          color: Color.fromARGB(240, 35, 35, 35),
+          color: Color.fromARGB(180, 35, 35, 35),
           borderRadius: BorderRadius.all(
             Radius.circular(16.0),
           ),

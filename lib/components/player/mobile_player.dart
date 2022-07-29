@@ -17,7 +17,7 @@ class MobilePlayer extends ConsumerWidget {
       padding: const EdgeInsets.all(8.0),
       child: Container(
         decoration: const BoxDecoration(
-          color: Color.fromARGB(240, 25, 25, 25),
+          color: Color.fromARGB(180, 25, 25, 25),
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(12.0),
             bottomRight: Radius.circular(12.0),
@@ -36,52 +36,50 @@ class MobilePlayer extends ConsumerWidget {
               LinearProgressIndicator(
                 value: playerProgress,
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        player.isPlaying
-                            ? IconButton(
-                                onPressed: () {
-                                  ref.read(playbackProvider.notifier).pause();
-                                },
-                                icon: const Icon(Icons.pause_circle),
-                              )
-                            : IconButton(
-                                onPressed: () {
-                                  ref.read(playbackProvider.notifier).play();
-                                },
-                                icon: const Icon(Icons.play_arrow),
-                              ),
-                        Visibility(
-                            visible: player.isLoading,
-                            child: CircularProgressIndicator()),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Text(
-                          player.currentPodcast,
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                          ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      player.isPlaying
+                          ? IconButton(
+                              onPressed: () {
+                                ref.read(playbackProvider.notifier).pause();
+                              },
+                              icon: const Icon(Icons.pause_circle),
+                            )
+                          : IconButton(
+                              onPressed: () {
+                                ref.read(playbackProvider.notifier).play();
+                              },
+                              icon: const Icon(Icons.play_arrow),
+                            ),
+                      Visibility(
+                          visible: player.isLoading,
+                          child: const CircularProgressIndicator()),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        player.currentPodcast,
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
                         ),
-                        Text(player.currentEpisode),
-                      ],
-                    ),
-                    Image.network(
-                      'https://podmestorage.blob.core.windows.net/podcast-images/F9378BFC404B1498E9E491524DDA7A2C_medium.jpg',
-                      fit: BoxFit.contain,
-                      height: 20,
-                    ),
-                    // const FlutterLogo()
-                  ],
-                ),
+                      ),
+                      Text(player.currentEpisode),
+                    ],
+                  ),
+                  Image.network(
+                    'https://podmestorage.blob.core.windows.net/podcast-images/F9378BFC404B1498E9E491524DDA7A2C_medium.jpg',
+                    fit: BoxFit.fitHeight,
+                    height: 70,
+                  ),
+
+                  // const FlutterLogo()
+                ],
               ),
             ],
           ),

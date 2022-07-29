@@ -26,7 +26,7 @@ class _SideRailState extends State<SideRail> {
       width: 100,
       height: screenHeight,
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
+        color: Theme.of(context).dialogBackgroundColor,
         boxShadow: const [
           BoxShadow(
             blurRadius: 12.0,
@@ -38,22 +38,51 @@ class _SideRailState extends State<SideRail> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const FlutterLogo(),
-          IconButton(
-            onPressed: () => _updateLocation('/'),
-            icon: const Icon(Icons.list),
+          AspectRatio(
+            aspectRatio: 1,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/logo.png',
+                  height: 40,
+                  width: 40,
+                ),
+              ],
+            ),
           ),
-          IconButton(
-            onPressed: () => _updateLocation('/search'),
-            icon: const Icon(Icons.search),
+          Divider(
+            color: Theme.of(context).primaryColor,
+            thickness: 1,
+            endIndent: 8,
+            indent: 8,
           ),
-          IconButton(
-            onPressed: () => _updateLocation('/favourites'),
-            icon: const Icon(Icons.heart_broken),
+          Expanded(
+            child: Column(
+              children: [
+                IconButton(
+                  onPressed: () => _updateLocation('/'),
+                  icon: const Icon(Icons.list),
+                ),
+                IconButton(
+                  onPressed: () => _updateLocation('/search'),
+                  icon: const Icon(Icons.search),
+                ),
+                IconButton(
+                  onPressed: () => _updateLocation('/favourites'),
+                  icon: const Icon(Icons.heart_broken),
+                ),
+                IconButton(
+                  onPressed: () => _updateLocation('/settings'),
+                  icon: const Icon(Icons.settings),
+                ),
+              ],
+            ),
           ),
-          IconButton(
-            onPressed: () => _updateLocation('/settings'),
-            icon: const Icon(Icons.settings),
+          Image.network(
+            'https://podmestorage.blob.core.windows.net/podcast-images/F9378BFC404B1498E9E491524DDA7A2C_medium.jpg',
+            fit: BoxFit.fill,
           ),
         ],
       ),

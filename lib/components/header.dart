@@ -31,8 +31,8 @@ class _HeaderState extends State<Header> {
         ],
       ),
       padding: const EdgeInsets.only(
-        left: 8,
-        right: 8,
+        left: 16,
+        right: 16,
       ),
       child: Row(
         children: [
@@ -42,7 +42,10 @@ class _HeaderState extends State<Header> {
               children: [
                 Text(
                   widget.title,
-                  style: Theme.of(context).textTheme.headline5,
+                  style: const TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
