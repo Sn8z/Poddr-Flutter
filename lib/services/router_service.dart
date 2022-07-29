@@ -24,13 +24,6 @@ final routerProvider = Provider<GoRouter>((ref) {
     refreshListenable: router,
     routes: router._routes,
     initialLocation: '/',
-    navigatorBuilder: (context, state, child) {
-      if (state.subloc == '/signin') {
-        return child;
-      } else {
-        return BaseWidget(child: child);
-      }
-    },
     errorPageBuilder: (context, state) => CustomTransitionPage(
       child: ErrorPage(error: state.error!),
       transitionsBuilder: (context, animation, secondaryAnimation, child) =>
@@ -44,7 +37,7 @@ class RouterNotifier extends ChangeNotifier {
 
   RouterNotifier(this.ref) {
     ref.listen(userProvider, (n, __) {
-      print('n: $n');
+      debugPrint('n: $n');
       notifyListeners();
     });
   }
@@ -119,7 +112,7 @@ class RouterNotifier extends ChangeNotifier {
             }
           },
           pageBuilder: (context, state) => CustomTransitionPage(
-            child: SignInPage(),
+            child: const SignInPage(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) =>
                     FadeTransition(opacity: animation, child: child),

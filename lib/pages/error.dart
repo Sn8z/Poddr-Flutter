@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:poddr/components/base.dart';
 
 class ErrorPage extends StatelessWidget {
   final Exception error;
@@ -6,6 +7,10 @@ class ErrorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SelectableText(error.toString());
+    return BaseWidget(
+      child: SelectableText(
+        error.toString(),
+      ),
+    );
   }
 }

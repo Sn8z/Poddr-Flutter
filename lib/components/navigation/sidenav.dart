@@ -12,7 +12,6 @@ class _SideNavState extends State<SideNav> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
 
     String currentLocation = GoRouter.of(context).location;
 
@@ -41,9 +40,16 @@ class _SideNavState extends State<SideNav> {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                FlutterLogo(),
-                Text(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset(
+                    'assets/images/logo.png',
+                    height: 40,
+                    width: 40,
+                  ),
+                ),
+                const Text(
                   "Poddr",
                   style: TextStyle(
                     fontSize: 20,
