@@ -74,10 +74,10 @@ class RouterNotifier extends ChangeNotifier {
           },
         ),
         GoRoute(
-          path: '/podcast/:podcastUrl',
+          path: '/podcast',
           name: 'podcast',
           pageBuilder: (context, state) {
-            final String url = state.params['podcastUrl'] ?? "";
+            final String url = state.queryParams['podcastUrl'] ?? "";
             return CustomTransitionPage(
               child: PodcastPage(url: url),
               transitionsBuilder:

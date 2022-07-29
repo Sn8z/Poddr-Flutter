@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:poddr/components/header.dart';
-import 'package:poddr/components/player/desktop_player.dart';
 import 'package:poddr/helpers/breakpoints.dart';
 
 class FavouritesPage extends StatefulWidget {
@@ -27,8 +26,9 @@ class _FavouritesPageState extends State<FavouritesPage> {
                     constraints.maxWidth > Breakpoints.desktopScreen ? 5 : 4,
                 children: List.generate(100, (index) {
                   return Padding(
-                    padding: EdgeInsets.all(25),
+                    padding: const EdgeInsets.all(26),
                     child: Container(
+                      clipBehavior: Clip.hardEdge,
                       decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor,
                         boxShadow: const [

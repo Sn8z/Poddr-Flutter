@@ -45,7 +45,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
             return GestureDetector(
               onTap: () {
                 debugPrint("Clicked ${podcast.feedUrl}");
-                context.go("/podcast/${podcast.feedUrl}");
+                context.go('/podcast?podcastUrl=${podcast.feedUrl}');
               },
               child: Card(
                 child: ListTile(

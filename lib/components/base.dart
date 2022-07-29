@@ -23,13 +23,17 @@ class BaseWidget extends StatelessWidget {
                 children: [
                   const SideNav(),
                   Expanded(
-                    child: Column(
+                    child: Stack(
                       children: [
-                        Expanded(
+                        Positioned.fill(
                           child: child,
-                          flex: 1,
                         ),
-                        DesktopPlayer(),
+                        const Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: DesktopPlayer(),
+                        ),
                       ],
                     ),
                   ),
@@ -40,10 +44,17 @@ class BaseWidget extends StatelessWidget {
                 children: [
                   const SideRail(),
                   Expanded(
-                    child: Column(
+                    child: Stack(
                       children: [
-                        Expanded(child: child),
-                        DesktopPlayer(),
+                        Positioned.fill(
+                          child: child,
+                        ),
+                        const Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: DesktopPlayer(),
+                        ),
                       ],
                     ),
                   ),
@@ -52,8 +63,21 @@ class BaseWidget extends StatelessWidget {
             } else {
               return Column(
                 children: [
-                  Expanded(child: child),
-                  const MobilePlayer(),
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: child,
+                        ),
+                        const Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: MobilePlayer(),
+                        ),
+                      ],
+                    ),
+                  ),
                   const BottomNav(),
                 ],
               );

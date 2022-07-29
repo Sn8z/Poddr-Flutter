@@ -37,9 +37,21 @@ class _SideNavState extends State<SideNav> {
       height: screenHeight,
       child: Column(
         children: [
-          Text(
-            "Poddr",
-            style: Theme.of(context).textTheme.headline3,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                FlutterLogo(),
+                Text(
+                  "Poddr",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
           ),
           Divider(
             color: Theme.of(context).primaryColor,
@@ -51,25 +63,37 @@ class _SideNavState extends State<SideNav> {
             child: ListView(
               children: [
                 ListTile(
-                  title: const Text("Toplists"),
+                  title: const Text(
+                    "Toplists",
+                    style: TextStyle(fontSize: 14),
+                  ),
                   leading: const Icon(Icons.list),
                   selected: currentLocation == "/" ? true : false,
                   onTap: () => _updateLocation('/'),
                 ),
                 ListTile(
-                  title: const Text("Search"),
+                  title: const Text(
+                    "Search",
+                    style: TextStyle(fontSize: 14),
+                  ),
                   leading: const Icon(Icons.search),
                   selected: currentLocation == "/search" ? true : false,
                   onTap: () => _updateLocation('/search'),
                 ),
                 ListTile(
-                  title: const Text("Favourites"),
+                  title: const Text(
+                    "Favourites",
+                    style: TextStyle(fontSize: 14),
+                  ),
                   leading: const Icon(Icons.favorite),
                   selected: currentLocation == "/favourites" ? true : false,
                   onTap: () => _updateLocation('/favourites'),
                 ),
                 ListTile(
-                  title: const Text("Settings"),
+                  title: const Text(
+                    "Settings",
+                    style: TextStyle(fontSize: 14),
+                  ),
                   leading: const Icon(Icons.settings),
                   selected: currentLocation == "/settings" ? true : false,
                   onTap: () => _updateLocation('/settings'),

@@ -36,10 +36,10 @@ class _SideRailState extends State<SideRail> {
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          const FlutterLogo(),
           IconButton(
-            hoverColor: Colors.green,
-            splashColor: Colors.blue,
             onPressed: () => _updateLocation('/'),
             icon: const Icon(Icons.list),
           ),

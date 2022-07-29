@@ -2,6 +2,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:poddr/helpers/duration_formatter.dart';
 
 final playerProvider = Provider<AudioPlayer>((ProviderRef ref) {
   return AudioPlayer();
@@ -11,10 +12,10 @@ class PlaybackState {
   PlaybackState({
     this.isPlaying = false,
     this.isLoading = false,
-    this.volume = 0.8,
+    this.volume = 0.5,
     this.playbackRate = 1.0,
-    this.duration = Duration.zero,
-    this.position = Duration.zero,
+    this.duration = const Duration(seconds: 0),
+    this.position = const Duration(seconds: 0),
     this.currentEpisode = "Episode",
     this.currentPodcast = "Podcast",
   });
@@ -27,6 +28,14 @@ class PlaybackState {
   final Duration position;
   final String currentEpisode;
   final String currentPodcast;
+
+  String getPosition() {
+    return convertDurationToString(position);
+  }
+
+  String getDuration() {
+    return convertDurationToString(duration);
+  }
 
   PlaybackState copyWith({
     bool? isPlaying,
