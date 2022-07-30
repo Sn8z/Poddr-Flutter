@@ -5,7 +5,6 @@ import 'package:podcast_search/podcast_search.dart';
 import 'package:poddr/components/base.dart';
 import 'package:poddr/components/header.dart';
 import 'package:poddr/components/inputField.dart';
-import 'package:poddr/services/audio_service.dart';
 
 class SearchPage extends ConsumerStatefulWidget {
   SearchPage({Key? key, this.query = ""}) : super(key: key);

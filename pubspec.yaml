@@ -40,10 +40,16 @@ dependencies:
   http: ^0.13.4
   podcast_search: ^0.5.1
   just_audio: ^0.9.28
-  just_audio_mpv: ^0.1.4
+  just_audio_mpv:
+    git:
+      url: https://github.com/bleonard252/just_audio_mpv
+      ref: afb2aa129ae62756042c58a227b519c856281437
   just_audio_windows: ^0.1.0
   just_audio_background: ^0.0.1-beta.7
   audio_session: ^0.1.10
+
+dependency_overrides:
+  dio: "4.0.4"
 
 dev_dependencies:
   flutter_test:

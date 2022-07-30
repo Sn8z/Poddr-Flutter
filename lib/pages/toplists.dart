@@ -17,13 +17,14 @@ class ToplistPage extends ConsumerWidget {
             ),
             Expanded(
               child: GridView.builder(
+                controller: ScrollController(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 5),
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
-                    margin: EdgeInsets.all(8),
+                    margin: const EdgeInsets.all(8),
                     clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         color: Color.fromARGB(255, 15, 15, 15),
                         borderRadius: BorderRadius.all(
                           Radius.circular(18),
@@ -31,7 +32,7 @@ class ToplistPage extends ConsumerWidget {
                     child: Column(
                       children: [
                         Image.asset('assets/images/logo.png'),
-                        Text('data'),
+                        const Text('data'),
                       ],
                     ),
                   );

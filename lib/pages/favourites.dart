@@ -23,6 +23,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
               ),
               Expanded(
                 child: GridView.count(
+                  controller: ScrollController(),
                   childAspectRatio: 0.8,
                   crossAxisCount:
                       constraints.maxWidth > Breakpoints.desktopScreen ? 5 : 4,

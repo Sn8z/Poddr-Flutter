@@ -63,6 +63,14 @@ class _SideNavState extends State<SideNav> {
           Expanded(
             child: ListView(
               children: [
+                Text(
+                  'PODCASTS',
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 ListTile(
                   title: const Text(
                     "Toplists",
