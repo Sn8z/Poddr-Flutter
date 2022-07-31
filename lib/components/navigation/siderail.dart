@@ -1,32 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:poddr/services/router_service.dart';
+import 'menu_items.dart';
 
-class SideRail extends StatefulWidget {
+class SideRail extends ConsumerWidget {
   const SideRail({Key? key}) : super(key: key);
 
   @override
-  State<SideRail> createState() => _SideRailState();
-}
-
-class _SideRailState extends State<SideRail> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     double screenHeight = MediaQuery.of(context).size.height;
-
-    String currentLocation = GoRouter.of(context).location;
+    String location = ref.read(routerProvider).location;
 
     void _updateLocation(String location) {
       context.go(location);
-      setState(() {
-        currentLocation = GoRouter.of(context).location;
-      });
     }
 
     return Container(
       width: 100,
       height: screenHeight,
       decoration: BoxDecoration(
-        color: Theme.of(context).dialogBackgroundColor,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? const Color.fromARGB(255, 30, 30, 30)
+            : const Color.fromARGB(255, 200, 200, 200),
         boxShadow: const [
           BoxShadow(
             blurRadius: 12.0,
@@ -60,24 +56,26 @@ class _SideRailState extends State<SideRail> {
           ),
           Expanded(
             child: Column(
-              children: [
-                IconButton(
-                  onPressed: () => _updateLocation('/'),
-                  icon: const Icon(Icons.list),
-                ),
-                IconButton(
-                  onPressed: () => _updateLocation('/search'),
-                  icon: const Icon(Icons.search),
-                ),
-                IconButton(
-                  onPressed: () => _updateLocation('/favourites'),
-                  icon: const Icon(Icons.heart_broken),
-                ),
-                IconButton(
-                  onPressed: () => _updateLocation('/settings'),
-                  icon: const Icon(Icons.settings),
-                ),
-              ],
+              children: menuItems.map((m) {
+                final bool isActive = location == m.path;
+                return IconButton(
+                  iconSize: isActive ? 36 : 28,
+                  tooltip: m.title,
+                  onPressed: () => _updateLocation(m.path),
+                  icon: isActive
+                      ? ShaderMask(
+                          shaderCallback: (Rect bounds) {
+                            return const LinearGradient(
+                              begin: Alignment.bottomLeft,
+                              colors: [Colors.orange, Colors.deepOrange],
+                            ).createShader(bounds);
+                          },
+                          blendMode: BlendMode.srcATop,
+                          child: Icon(m.icon),
+                        )
+                      : Icon(m.icon),
+                );
+              }).toList(),
             ),
           ),
           Image.network(

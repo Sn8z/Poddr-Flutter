@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:poddr/services/audio_service.dart';
 
 class SideNav extends StatefulWidget {
   const SideNav({Key? key}) : super(key: key);
@@ -21,7 +23,9 @@ class _SideNavState extends State<SideNav> {
       width: 250,
       height: double.infinity,
       decoration: BoxDecoration(
-        color: Theme.of(context).navigationBarTheme.backgroundColor,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? const Color.fromARGB(255, 30, 30, 30)
+            : const Color.fromARGB(255, 200, 200, 200),
         boxShadow: const [
           BoxShadow(
             blurRadius: 12.0,
@@ -110,9 +114,13 @@ class _SideNavState extends State<SideNav> {
               ],
             ),
           ),
-          Image.network(
-            'https://podmestorage.blob.core.windows.net/podcast-images/F9378BFC404B1498E9E491524DDA7A2C_medium.jpg',
-            fit: BoxFit.fill,
+          Consumer(
+            builder: (context, ref, child) {
+              return Image.network(
+                ref.watch(playbackProvider).getImage(),
+                fit: BoxFit.fill,
+              );
+            },
           ),
         ],
       ),

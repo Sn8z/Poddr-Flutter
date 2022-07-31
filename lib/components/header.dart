@@ -20,9 +20,11 @@ class _HeaderState extends State<Header> {
     return Container(
       height: 80,
       width: screenWidth,
-      decoration: const BoxDecoration(
-        color: Color.fromARGB(255, 30, 30, 30),
-        boxShadow: [
+      decoration: BoxDecoration(
+        color: Theme.of(context).brightness == Brightness.dark
+            ? const Color.fromARGB(255, 30, 30, 30)
+            : const Color.fromARGB(255, 220, 220, 220),
+        boxShadow: const [
           BoxShadow(
             offset: Offset(10, 0),
             blurRadius: 12.0,

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,6 +19,7 @@ class PlaybackState {
     this.position = const Duration(seconds: 0),
     this.currentEpisode = "Episode",
     this.currentPodcast = "Podcast",
+    this.imageUrl = "",
   });
 
   final bool isPlaying;
@@ -28,6 +30,7 @@ class PlaybackState {
   final Duration position;
   final String currentEpisode;
   final String currentPodcast;
+  final String imageUrl;
 
   String getPosition() {
     return convertDurationToString(position);
@@ -35,6 +38,10 @@ class PlaybackState {
 
   String getDuration() {
     return convertDurationToString(duration);
+  }
+
+  String getImage() {
+    return imageUrl;
   }
 
   PlaybackState copyWith({
@@ -46,6 +53,7 @@ class PlaybackState {
     Duration? position,
     String? currentEpisode,
     String? currentPodcast,
+    String? imageUrl,
   }) {
     return PlaybackState(
       isPlaying: isPlaying ?? this.isPlaying,
@@ -64,7 +72,7 @@ class PlaybackNotifier extends StateNotifier<PlaybackState> {
   final AudioPlayer player;
 
   PlaybackNotifier(this.player) : super(PlaybackState()) {
-    print('PlaybackNotifier init!');
+    debugPrint('PlaybackNotifier init!');
     setupAudioSession();
     initPlayer();
   }
@@ -86,18 +94,18 @@ class PlaybackNotifier extends StateNotifier<PlaybackState> {
             'https://media.rawvoice.com/officialaviciipodcast/media2-av.podtree.com/media/podcast/AVICII_FM_008.m4a');
 
     player.durationStream.listen((Duration? dur) {
-      print('Max duration: $dur');
+      debugPrint('Max duration: $dur');
       state = state.copyWith(duration: dur);
     });
 
     player.positionStream.listen((Duration? pos) {
-      print('Current position: $pos');
+      debugPrint('Current position: $pos');
       state = state.copyWith(position: pos);
     });
 
     player.playerStateStream.listen((PlayerState playerState) {
       if (playerState.playing) {
-        print('Player is Playing!');
+        debugPrint('Player is Playing!');
         state = state.copyWith(isPlaying: true);
       } else {
         state = state.copyWith(isPlaying: false);
@@ -105,22 +113,22 @@ class PlaybackNotifier extends StateNotifier<PlaybackState> {
 
       switch (playerState.processingState) {
         case ProcessingState.idle:
-          print('Player is Idle!');
+          debugPrint('Player is Idle!');
           break;
         case ProcessingState.loading:
-          print('Player is Loading!');
+          debugPrint('Player is Loading!');
           state = state.copyWith(isLoading: true);
           break;
         case ProcessingState.buffering:
-          print('Player is Buffering!');
+          debugPrint('Player is Buffering!');
           state = state.copyWith(isLoading: true);
           break;
         case ProcessingState.ready:
-          print('Player is Ready!');
+          debugPrint('Player is Ready!');
           state = state.copyWith(isLoading: false);
           break;
         case ProcessingState.completed:
-          print('Player is Completed!');
+          debugPrint('Player is Completed!');
           state = state.copyWith(
             isPlaying: false,
             position: Duration.zero,
@@ -132,14 +140,14 @@ class PlaybackNotifier extends StateNotifier<PlaybackState> {
     });
 
     player.playbackEventStream.listen((PlaybackEvent event) {
-      print(event);
+      debugPrint(event.toString());
     }, onError: (Object e, StackTrace st) {
       player.stop();
       if (e is PlayerException) {
-        print('Error code: ${e.code}');
-        print('Error message: ${e.message}');
+        debugPrint('Error code: ${e.code}');
+        debugPrint('Error message: ${e.message}');
       } else {
-        print('An error occurred: $e');
+        debugPrint('An error occurred: $e');
       }
       return 0;
     });
@@ -148,29 +156,33 @@ class PlaybackNotifier extends StateNotifier<PlaybackState> {
   void loadAudio(
       {String podcast = "Podcast",
       String episode = "Episode",
+      String? imageUrl,
       required String url}) async {
     try {
       state = state.copyWith(
         currentPodcast: podcast,
         currentEpisode: episode,
+        imageUrl: imageUrl ?? state.imageUrl,
       );
-      final AudioSource audioSource = AudioSource.uri(Uri.parse(url),
-          tag: MediaItem(
-            id: '1',
-            title: episode,
-            album: podcast,
-            artist: 'Poddr',
-            artUri: Uri.parse(
-                'https://podmestorage.blob.core.windows.net/podcast-images/F9378BFC404B1498E9E491524DDA7A2C_medium.jpg'),
-          ));
+      final AudioSource audioSource = AudioSource.uri(
+        Uri.parse(url),
+        tag: MediaItem(
+          id: '1',
+          title: episode,
+          album: podcast,
+          artist: podcast,
+          artUri: Uri.parse(imageUrl ??
+              'https://podmestorage.blob.core.windows.net/podcast-images/F9378BFC404B1498E9E491524DDA7A2C_medium.jpg'),
+        ),
+      );
       await player.setAudioSource(audioSource);
     } on PlayerException catch (e) {
-      print("Error code: ${e.code}");
-      print("Error message: ${e.message}");
+      debugPrint("Error code: ${e.code}");
+      debugPrint("Error message: ${e.message}");
     } on PlayerInterruptedException catch (e) {
-      print("Connection aborted: ${e.message}");
+      debugPrint("Connection aborted: ${e.message}");
     } catch (e) {
-      print('An error occured: $e');
+      debugPrint('An error occured: $e');
     }
   }
 
@@ -179,32 +191,32 @@ class PlaybackNotifier extends StateNotifier<PlaybackState> {
   }
 
   void pause() async {
-    print('AudioService pausing');
+    debugPrint('AudioService pausing');
     await player.pause();
   }
 
   void stop() async {
-    print('AudioService stopping');
+    debugPrint('AudioService stopping');
     await player.stop();
   }
 
   void seek(int seekPos) async {
-    print('AudioService seeking');
+    debugPrint('AudioService seeking');
     try {
       await player.seek(Duration(seconds: seekPos));
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
   }
 
   void setSpeed(double rate) async {
-    print('AudioService setting speed');
+    debugPrint('AudioService setting speed');
     await player.setSpeed(rate);
     state = state.copyWith(playbackRate: rate);
   }
 
   void setVolume(double volume) async {
-    print('AudioService setting volume');
+    debugPrint('AudioService setting volume');
     await player.setVolume(volume);
     state = state.copyWith(volume: volume);
   }

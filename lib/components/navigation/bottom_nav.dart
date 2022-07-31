@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:poddr/services/router_service.dart';
+import 'menu_items.dart';
 
 class BottomNav extends ConsumerWidget {
   const BottomNav({Key? key}) : super(key: key);
@@ -19,10 +20,12 @@ class BottomNav extends ConsumerWidget {
       width: screenWidth,
       height: 60,
       clipBehavior: Clip.hardEdge,
-      decoration: const BoxDecoration(
-        color: Color.fromARGB(255, 35, 35, 35),
+      decoration: BoxDecoration(
+        color: Theme.of(context).brightness == Brightness.dark
+            ? const Color.fromARGB(255, 30, 30, 30)
+            : const Color.fromARGB(255, 200, 200, 200),
         backgroundBlendMode: BlendMode.multiply,
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             blurRadius: 12.0,
             blurStyle: BlurStyle.outer,
@@ -31,11 +34,13 @@ class BottomNav extends ConsumerWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          IconButton(
-            iconSize: location == '/' ? 36 : 28,
-            onPressed: () => _updateLocation('/'),
-            icon: location == '/'
+        children: menuItems.map((m) {
+          final bool isActive = location == m.path;
+          return IconButton(
+            iconSize: isActive ? 36 : 28,
+            tooltip: m.title,
+            onPressed: () => _updateLocation(m.path),
+            icon: isActive
                 ? ShaderMask(
                     shaderCallback: (Rect bounds) {
                       return const LinearGradient(
@@ -44,41 +49,11 @@ class BottomNav extends ConsumerWidget {
                       ).createShader(bounds);
                     },
                     blendMode: BlendMode.srcATop,
-                    child: const Icon(Icons.podcasts_outlined),
+                    child: Icon(m.icon),
                   )
-                : const Icon(Icons.podcasts),
-          ),
-          IconButton(
-            iconSize: location == '/search' ? 36 : 28,
-            onPressed: () => _updateLocation('/search'),
-            icon: location == '/search'
-                ? const Icon(
-                    Icons.search,
-                    color: Colors.blue,
-                  )
-                : const Icon(Icons.search),
-          ),
-          IconButton(
-            iconSize: location == '/favourites' ? 36 : 28,
-            onPressed: () => _updateLocation('/favourites'),
-            icon: location == '/favourites'
-                ? const Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                  )
-                : const Icon(Icons.favorite),
-          ),
-          IconButton(
-            iconSize: location == '/settings' ? 36 : 28,
-            onPressed: () => _updateLocation('/settings'),
-            icon: location == '/settings'
-                ? const Icon(
-                    Icons.settings,
-                    color: Colors.yellow,
-                  )
-                : const Icon(Icons.settings),
-          ),
-        ],
+                : Icon(m.icon),
+          );
+        }).toList(),
       ),
     );
   }

@@ -16,9 +16,11 @@ class MobilePlayer extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        decoration: const BoxDecoration(
-          color: Color.fromARGB(180, 25, 25, 25),
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? const Color.fromARGB(180, 30, 30, 30)
+              : const Color.fromARGB(180, 220, 220, 220),
+          borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(12.0),
             bottomRight: Radius.circular(12.0),
             topLeft: Radius.circular(12.0),
@@ -48,13 +50,13 @@ class MobilePlayer extends ConsumerWidget {
                               onPressed: () {
                                 ref.read(playbackProvider.notifier).pause();
                               },
-                              icon: const Icon(Icons.pause_circle),
+                              icon: const Icon(Icons.pause_rounded),
                             )
                           : IconButton(
                               onPressed: () {
                                 ref.read(playbackProvider.notifier).play();
                               },
-                              icon: const Icon(Icons.play_arrow),
+                              icon: const Icon(Icons.play_arrow_rounded),
                             ),
                       Visibility(
                           visible: player.isLoading,

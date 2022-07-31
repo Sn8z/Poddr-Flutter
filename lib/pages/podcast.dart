@@ -17,8 +17,22 @@ class PodcastPage extends ConsumerWidget {
     return BaseWidget(
       child: podcast.when(
         data: (Podcast p) => PodcastWidget(p),
-        error: (e, __) => Text(e.toString()),
-        loading: () => const CircularProgressIndicator(),
+        error: (e, __) {
+          return Column(
+            children: [
+              const Header(title: 'Something went wrong'),
+              Text(e.toString()),
+            ],
+          );
+        },
+        loading: () {
+          return Column(
+            children: const [
+              Header(title: ''),
+              LinearProgressIndicator(),
+            ],
+          );
+        },
       ),
     );
   }
@@ -32,7 +46,7 @@ class PodcastWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
-        const Header(title: ""),
+        Header(title: podcast.title ?? ""),
         Expanded(
           child: ListView.builder(
             scrollDirection: Axis.vertical,
@@ -49,6 +63,7 @@ class PodcastWidget extends ConsumerWidget {
                           url: podcast.episodes?[index].contentUrl ?? "",
                           episode: podcast.episodes?[index].title ?? "",
                           podcast: podcast.episodes?[index].author ?? "",
+                          imageUrl: podcast.episodes?[index].imageUrl,
                         );
                   },
                 ),
