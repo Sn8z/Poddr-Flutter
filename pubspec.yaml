@@ -52,6 +52,7 @@ dependency_overrides:
   dio: "4.0.4"
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.9.3
   flutter_test:
     sdk: flutter
 
