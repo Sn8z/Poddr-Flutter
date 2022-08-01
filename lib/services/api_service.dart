@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:podcast_search/podcast_search.dart';
+import 'package:poddr/helpers/user_agent.dart';
 
 final podcastSearchProvider =
     FutureProvider.autoDispose.family<Future, String>((Ref ref, String query) {
@@ -20,7 +21,7 @@ final apiProvider = Provider<ApiService>((ref) {
 });
 
 class ApiService {
-  final Search podcastSearch = Search();
+  final Search podcastSearch = Search(userAgent: getUserAgent());
 
   Future<SearchResult> search(String query) {
     return podcastSearch.search(
@@ -36,7 +37,7 @@ class ApiService {
   Future<Podcast> loadFeed(String url) {
     return Podcast.loadFeed(
       url: url,
-      userAgent: 'Poddr',
+      userAgent: getUserAgent(),
     );
   }
 }

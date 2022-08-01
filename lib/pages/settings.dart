@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poddr/components/base.dart';
 import 'package:poddr/components/header.dart';
+import 'package:poddr/helpers/user_agent.dart';
 import 'package:poddr/services/theme_service.dart';
 
 class SettingsPage extends ConsumerWidget {
@@ -18,35 +19,44 @@ class SettingsPage extends ConsumerWidget {
             ),
             const Text('Settings'),
             TextButton(
-              child: Text('Set light mode'),
+              child: const Text('Set light mode'),
               onPressed: () {
                 ref.read(themeModeProvider.notifier).setLightMode();
               },
             ),
             TextButton(
-              child: Text('Set dark mode'),
+              child: const Text('Set dark mode'),
               onPressed: () {
                 ref.read(themeModeProvider.notifier).setDarkMode();
               },
             ),
             TextButton(
-              child: Text('Toggle dark mode'),
+              child: const Text('Toggle dark mode'),
               onPressed: () {
                 ref.read(themeModeProvider.notifier).toggleMode();
               },
             ),
             Text(ref.watch(themeModeProvider).toString()),
             Divider(
-              thickness: 5,
-              color: Colors.black,
+              thickness: 2,
+              endIndent: 26,
+              indent: 26,
+              color: Theme.of(context).primaryColor,
             ),
             Text(ref.watch(themeDataProvider).toString()),
             TextButton(
-              child: Text('Update theme Color'),
+              child: const Text('Update theme Color'),
               onPressed: () {
                 ref.read(themeDataProvider.notifier).updateColor();
               },
             ),
+            Divider(
+              thickness: 2,
+              endIndent: 26,
+              indent: 26,
+              color: Theme.of(context).primaryColor,
+            ),
+            SelectableText(getUserAgent())
           ],
         ),
       ),

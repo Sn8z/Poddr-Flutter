@@ -4,9 +4,10 @@ import 'package:audio_session/audio_session.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:poddr/helpers/duration_formatter.dart';
+import 'package:poddr/helpers/user_agent.dart';
 
 final playerProvider = Provider<AudioPlayer>((ProviderRef ref) {
-  return AudioPlayer();
+  return AudioPlayer(userAgent: getUserAgent());
 });
 
 class PlaybackState {
