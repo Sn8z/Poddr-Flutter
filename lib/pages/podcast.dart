@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:podcast_search/podcast_search.dart';
@@ -16,7 +18,10 @@ class PodcastPage extends ConsumerWidget {
     AsyncValue<Podcast> podcast = ref.watch(podcastProvider(url));
     return BaseWidget(
       child: podcast.when(
-        data: (Podcast p) => PodcastWidget(p),
+        data: (Podcast p) {
+          inspect(p);
+          return PodcastWidget(p);
+        },
         error: (e, __) {
           return Column(
             children: [
@@ -54,8 +59,10 @@ class PodcastWidget extends ConsumerWidget {
             controller: ScrollController(),
             itemCount: podcast.episodes?.length,
             itemBuilder: (BuildContext context, int index) {
+              Episode ep = podcast.episodes![index];
               return ListTile(
-                title: Text(podcast.episodes?[index].title ?? "Missing title"),
+                leading: const Icon(Icons.podcasts_rounded),
+                title: Text(ep.title),
                 trailing: IconButton(
                   icon: const Icon(Icons.play_arrow),
                   onPressed: () {

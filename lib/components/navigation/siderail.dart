@@ -78,8 +78,8 @@ class SideRail extends ConsumerWidget {
               }).toList(),
             ),
           ),
-          Image.network(
-            'https://podmestorage.blob.core.windows.net/podcast-images/F9378BFC404B1498E9E491524DDA7A2C_medium.jpg',
+          Image.asset(
+            'assets/images/placeholder.png',
             fit: BoxFit.fill,
           ),
         ],

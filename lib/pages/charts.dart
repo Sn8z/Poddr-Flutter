@@ -25,13 +25,18 @@ class ToplistPage extends ConsumerWidget {
               inspect(charts);
               return Expanded(
                 child: RefreshIndicator(
-                  onRefresh: (() => ref.refresh(chartsProvider.future)),
+                  onRefresh: (() async {
+                    ref.refresh(chartsProvider);
+                  }),
                   child: GridView.builder(
                     controller: ScrollController(),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4),
+                            crossAxisCount: 3),
                     itemCount: charts.items.length,
+                    padding: const EdgeInsets.only(
+                      bottom: 90,
+                    ),
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {

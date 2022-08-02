@@ -77,12 +77,12 @@ class _SideNavState extends State<SideNav> {
                 ),
                 ListTile(
                   title: const Text(
-                    "Toplists",
+                    "Charts",
                     style: TextStyle(fontSize: 14),
                   ),
                   leading: const Icon(Icons.list),
-                  selected: currentLocation == "/" ? true : false,
-                  onTap: () => _updateLocation('/'),
+                  selected: currentLocation == "/charts" ? true : false,
+                  onTap: () => _updateLocation('/charts'),
                 ),
                 ListTile(
                   title: const Text(
@@ -116,8 +116,8 @@ class _SideNavState extends State<SideNav> {
           ),
           Consumer(
             builder: (context, ref, child) {
-              return Image.network(
-                ref.watch(playbackProvider).getImage(),
+              return Image.asset(
+                'assets/images/placeholder.png',
                 fit: BoxFit.fill,
               );
             },

@@ -9,7 +9,7 @@ class CustomMenuItem {
 }
 
 List<CustomMenuItem> menuItems = [
-  CustomMenuItem('Charts', '/', Icons.podcasts_rounded),
+  CustomMenuItem('Charts', '/charts', Icons.podcasts_rounded),
   CustomMenuItem('Favourites', '/favourites', Icons.favorite_rounded),
   CustomMenuItem('Search', '/search', Icons.search_rounded),
   CustomMenuItem('Settings', '/settings', Icons.settings_rounded),

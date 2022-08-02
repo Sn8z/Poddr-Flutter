@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:poddr/services/auth_service.dart';
 
 class Header extends StatefulWidget {
   const Header({Key? key, required this.title}) : super(key: key);
@@ -18,7 +15,7 @@ class _HeaderState extends State<Header> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
-      height: 80,
+      height: 60,
       width: screenWidth,
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.dark
@@ -45,26 +42,10 @@ class _HeaderState extends State<Header> {
                 Text(
                   widget.title,
                   style: const TextStyle(
-                    fontSize: 32,
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
+                    overflow: TextOverflow.fade,
                   ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Consumer(builder: (context, ref, child) {
-                  return ElevatedButton(
-                    onPressed: () => ref.read(authProvider).signOut(),
-                    child: const Text('Logout'),
-                  );
-                }),
-                ElevatedButton(
-                  onPressed: () => context.go("/signin"),
-                  child: const Text("Log in"),
                 ),
               ],
             ),

@@ -9,6 +9,7 @@ class CustomInputField extends StatelessWidget {
     this.prefix,
     this.prefixIcon,
     this.isPassword = false,
+    this.autofocus = false,
     this.keyboardType = TextInputType.text,
     required this.textController,
     required this.onChanged,
@@ -21,6 +22,7 @@ class CustomInputField extends StatelessWidget {
   final Widget? prefix;
   final Widget? prefixIcon;
   final bool isPassword;
+  final bool autofocus;
   final TextInputType keyboardType;
   final TextEditingController textController;
   final Function(String) onChanged;
@@ -32,6 +34,7 @@ class CustomInputField extends StatelessWidget {
       keyboardType: keyboardType,
       obscureText: isPassword,
       onChanged: onChanged,
+      autofocus: autofocus,
       onFieldSubmitted: onSubmitted,
       textAlign: TextAlign.start,
       decoration: InputDecoration(

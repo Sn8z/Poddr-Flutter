@@ -5,14 +5,12 @@ import 'package:go_router/go_router.dart';
 // Pages
 import 'package:poddr/pages/error.dart';
 import 'package:poddr/pages/favourites.dart';
+import 'package:poddr/pages/player.dart';
 import 'package:poddr/pages/podcast.dart';
 import 'package:poddr/pages/search.dart';
 import 'package:poddr/pages/settings.dart';
 import 'package:poddr/pages/signin.dart';
 import 'package:poddr/pages/toplists.dart';
-
-// Base widget
-import 'package:poddr/components/base.dart';
 
 // Providers
 import 'auth_service.dart';
@@ -45,9 +43,17 @@ class RouterNotifier extends ChangeNotifier {
   List<GoRoute> get _routes => [
         GoRoute(
           path: '/',
-          name: 'toplists',
+          name: 'root',
+          redirect: (_) {
+            return '/charts';
+          },
+        ),
+        GoRoute(
+          path: '/charts',
+          name: 'charts',
           pageBuilder: (context, state) => CustomTransitionPage(
-            child: ToplistPage(),
+            child: const ToplistPage(),
+            key: state.pageKey,
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) =>
                     FadeTransition(opacity: animation, child: child),
@@ -60,6 +66,7 @@ class RouterNotifier extends ChangeNotifier {
             final query = state.queryParams['query'] ?? "";
             return CustomTransitionPage(
               child: SearchPage(query: query),
+              key: state.pageKey,
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) =>
                       FadeTransition(opacity: animation, child: child),
@@ -73,6 +80,7 @@ class RouterNotifier extends ChangeNotifier {
             final String url = state.queryParams['podcastUrl'] ?? "";
             return CustomTransitionPage(
               child: PodcastPage(url: url),
+              key: state.pageKey,
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) =>
                       FadeTransition(opacity: animation, child: child),
@@ -82,11 +90,10 @@ class RouterNotifier extends ChangeNotifier {
         GoRoute(
           path: '/favourites',
           name: 'favourites',
-          pageBuilder: (context, state) => CustomTransitionPage(
+          pageBuilder: (context, state) => MaterialPage(
             child: const FavouritesPage(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) =>
-                    FadeTransition(opacity: animation, child: child),
+            key: state.pageKey,
+            restorationId: state.pageKey.value,
           ),
         ),
         GoRoute(
@@ -94,9 +101,41 @@ class RouterNotifier extends ChangeNotifier {
           name: 'settings',
           pageBuilder: (context, state) => CustomTransitionPage(
             child: const SettingsPage(),
+            key: state.pageKey,
             transitionsBuilder:
-                (context, animation, secondaryAnimation, child) =>
-                    FadeTransition(opacity: animation, child: child),
+                (context, animation, secondaryAnimation, child) {
+              const begin = Offset(0.0, 1.0);
+              const end = Offset.zero;
+              const curve = Curves.ease;
+
+              var tween =
+                  Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+              return SlideTransition(
+                position: animation.drive(tween),
+                child: child,
+              );
+            },
+          ),
+        ),
+        GoRoute(
+          path: '/player',
+          name: 'player',
+          pageBuilder: (context, state) => CustomTransitionPage(
+            child: const PlayerPage(),
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 300),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return SlideTransition(
+                  position: animation.drive(
+                    Tween<Offset>(
+                      begin: const Offset(0, 1),
+                      end: Offset.zero,
+                    ).chain(CurveTween(curve: Curves.easeIn)),
+                  ),
+                  child: child);
+            },
           ),
         ),
         GoRoute(
@@ -113,6 +152,7 @@ class RouterNotifier extends ChangeNotifier {
           },
           pageBuilder: (context, state) => CustomTransitionPage(
             child: const SignInPage(),
+            key: state.pageKey,
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) =>
                     FadeTransition(opacity: animation, child: child),

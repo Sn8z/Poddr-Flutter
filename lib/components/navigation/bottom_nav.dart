@@ -24,7 +24,6 @@ class BottomNav extends ConsumerWidget {
         color: Theme.of(context).brightness == Brightness.dark
             ? const Color.fromARGB(255, 30, 30, 30)
             : const Color.fromARGB(255, 200, 200, 200),
-        backgroundBlendMode: BlendMode.multiply,
         boxShadow: const [
           BoxShadow(
             blurRadius: 12.0,

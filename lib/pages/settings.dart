@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:poddr/components/base.dart';
 import 'package:poddr/components/header.dart';
 import 'package:poddr/helpers/user_agent.dart';
+import 'package:poddr/services/auth_service.dart';
 import 'package:poddr/services/theme_service.dart';
 
 class SettingsPage extends ConsumerWidget {
@@ -56,7 +58,30 @@ class SettingsPage extends ConsumerWidget {
               indent: 26,
               color: Theme.of(context).primaryColor,
             ),
-            SelectableText(getUserAgent())
+            SelectableText(getUserAgent()),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Consumer(builder: (context, ref, child) {
+                    return ElevatedButton(
+                      onPressed: () => ref.read(authProvider).signOut(),
+                      child: const Text('Logout'),
+                    );
+                  }),
+                  ElevatedButton(
+                    onPressed: () => context.go("/signin"),
+                    child: const Text("Log in"),
+                  ),
+                ],
+              ),
+            ),
+            Divider(
+              thickness: 2,
+              endIndent: 26,
+              indent: 26,
+              color: Theme.of(context).primaryColor,
+            ),
           ],
         ),
       ),

@@ -63,22 +63,37 @@ class _FavouritesPageState extends State<FavouritesPage> {
             ],
           );
         } else {
-          return Column(
-            children: [
-              const Header(
-                title: 'Favourites',
+          return CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                floating: true,
+                pinned: true,
+                flexibleSpace: Container(
+                  color: Colors.amber,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      debugPrint('FAB clicked');
+                    },
+                    child: Icon(Icons.plus_one_rounded),
+                  ),
+                ),
+                expandedHeight: 200,
               ),
-              Expanded(
-                child: ListView(
-                  children: List.generate(100, (index) {
-                    return ListTile(
-                      title: Text(
-                        'Item $index',
-                        style: Theme.of(context).textTheme.headline5,
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    return Card(
+                      child: ListTile(
+                        leading: const Icon(Icons.podcasts_rounded),
+                        title: Text('Item #$index'),
+                        trailing: IconButton(
+                          onPressed: () {},
+                          icon: Icon(Icons.play_arrow_rounded),
+                        ),
                       ),
-                      leading: const Icon(Icons.add_a_photo),
                     );
-                  }),
+                  },
+                  childCount: 1000,
                 ),
               ),
             ],

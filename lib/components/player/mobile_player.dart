@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:poddr/services/audio_service.dart';
 
 class MobilePlayer extends ConsumerWidget {
@@ -65,17 +66,22 @@ class MobilePlayer extends ConsumerWidget {
                   ),
                   Column(
                     children: [
-                      Text(
-                        player.currentPodcast,
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
+                      TextButton(
+                        onPressed: () {
+                          context.goNamed('player');
+                        },
+                        child: Text(
+                          player.currentPodcast,
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                          ),
                         ),
                       ),
                       Text(player.currentEpisode),
                     ],
                   ),
-                  Image.network(
-                    'https://podmestorage.blob.core.windows.net/podcast-images/F9378BFC404B1498E9E491524DDA7A2C_medium.jpg',
+                  Image.asset(
+                    'assets/images/placeholder.png',
                     fit: BoxFit.fitHeight,
                     height: 70,
                   ),
