@@ -10,7 +10,7 @@ import 'package:poddr/pages/podcast.dart';
 import 'package:poddr/pages/search.dart';
 import 'package:poddr/pages/settings.dart';
 import 'package:poddr/pages/signin.dart';
-import 'package:poddr/pages/toplists.dart';
+import 'package:poddr/pages/charts.dart';
 
 // Providers
 import 'auth_service.dart';
@@ -90,10 +90,12 @@ class RouterNotifier extends ChangeNotifier {
         GoRoute(
           path: '/favourites',
           name: 'favourites',
-          pageBuilder: (context, state) => MaterialPage(
+          pageBuilder: (context, state) => CustomTransitionPage(
             child: const FavouritesPage(),
             key: state.pageKey,
-            restorationId: state.pageKey.value,
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(opacity: animation, child: child),
           ),
         ),
         GoRoute(
@@ -102,6 +104,18 @@ class RouterNotifier extends ChangeNotifier {
           pageBuilder: (context, state) => CustomTransitionPage(
             child: const SettingsPage(),
             key: state.pageKey,
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(opacity: animation, child: child),
+          ),
+        ),
+        GoRoute(
+          path: '/player',
+          name: 'player',
+          pageBuilder: (context, state) => CustomTransitionPage(
+            child: const PlayerPage(),
+            key: state.pageKey,
+            transitionDuration: const Duration(milliseconds: 300),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               const begin = Offset(0.0, 1.0);
@@ -115,26 +129,6 @@ class RouterNotifier extends ChangeNotifier {
                 position: animation.drive(tween),
                 child: child,
               );
-            },
-          ),
-        ),
-        GoRoute(
-          path: '/player',
-          name: 'player',
-          pageBuilder: (context, state) => CustomTransitionPage(
-            child: const PlayerPage(),
-            key: state.pageKey,
-            transitionDuration: const Duration(milliseconds: 300),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-              return SlideTransition(
-                  position: animation.drive(
-                    Tween<Offset>(
-                      begin: const Offset(0, 1),
-                      end: Offset.zero,
-                    ).chain(CurveTween(curve: Curves.easeIn)),
-                  ),
-                  child: child);
             },
           ),
         ),

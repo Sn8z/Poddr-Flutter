@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:poddr/services/audio_service.dart';
 import 'package:poddr/services/router_service.dart';
 import 'menu_items.dart';
 
@@ -78,10 +80,20 @@ class SideRail extends ConsumerWidget {
               }).toList(),
             ),
           ),
-          Image.asset(
-            'assets/images/placeholder.png',
-            fit: BoxFit.fill,
-          ),
+          Consumer(
+            builder: (context, ref, child) {
+              return CachedNetworkImage(
+                imageUrl: ref.watch(playbackProvider).imageUrl,
+                fit: BoxFit.contain,
+                errorWidget: (context, url, error) {
+                  return Image.asset('assets/images/placeholder.png');
+                },
+                placeholder: (context, url) {
+                  return const CircularProgressIndicator();
+                },
+              );
+            },
+          )
         ],
       ),
     );

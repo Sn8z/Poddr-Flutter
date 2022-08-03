@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poddr/components/base.dart';
 import 'package:poddr/components/header.dart';
 import 'package:poddr/helpers/breakpoints.dart';
 
-class FavouritesPage extends StatefulWidget {
+class FavouritesPage extends ConsumerWidget {
   const FavouritesPage({Key? key}) : super(key: key);
 
   @override
-  State<FavouritesPage> createState() => _FavouritesPageState();
-}
-
-class _FavouritesPageState extends State<FavouritesPage> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return BaseWidget(
       child: LayoutBuilder(builder: (context, constraints) {
         if (constraints.maxWidth > Breakpoints.tabletScreen) {
@@ -74,7 +70,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
                     onPressed: () {
                       debugPrint('FAB clicked');
                     },
-                    child: Icon(Icons.plus_one_rounded),
+                    child: const Icon(Icons.plus_one_rounded),
                   ),
                 ),
                 expandedHeight: 200,
@@ -88,7 +84,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
                         title: Text('Item #$index'),
                         trailing: IconButton(
                           onPressed: () {},
-                          icon: Icon(Icons.play_arrow_rounded),
+                          icon: const Icon(Icons.play_arrow_rounded),
                         ),
                       ),
                     );

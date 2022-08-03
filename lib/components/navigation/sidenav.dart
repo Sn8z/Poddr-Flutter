@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -116,9 +117,15 @@ class _SideNavState extends State<SideNav> {
           ),
           Consumer(
             builder: (context, ref, child) {
-              return Image.asset(
-                'assets/images/placeholder.png',
-                fit: BoxFit.fill,
+              return CachedNetworkImage(
+                imageUrl: ref.watch(playbackProvider).imageUrl,
+                fit: BoxFit.contain,
+                errorWidget: (context, url, error) {
+                  return Image.asset('assets/images/placeholder.png');
+                },
+                placeholder: (context, url) {
+                  return const CircularProgressIndicator();
+                },
               );
             },
           ),

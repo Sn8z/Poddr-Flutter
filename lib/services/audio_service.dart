@@ -65,6 +65,7 @@ class PlaybackState {
       position: position ?? this.position,
       currentEpisode: currentEpisode ?? this.currentEpisode,
       currentPodcast: currentPodcast ?? this.currentPodcast,
+      imageUrl: imageUrl ?? this.imageUrl,
     );
   }
 }
@@ -188,6 +189,7 @@ class PlaybackNotifier extends StateNotifier<PlaybackState> {
   }
 
   void play() async {
+    debugPrint('AudioService playing');
     player.play();
   }
 

@@ -70,7 +70,8 @@ class PodcastWidget extends ConsumerWidget {
                           url: podcast.episodes?[index].contentUrl ?? "",
                           episode: podcast.episodes?[index].title ?? "",
                           podcast: podcast.episodes?[index].author ?? "",
-                          imageUrl: podcast.episodes?[index].imageUrl,
+                          imageUrl: podcast.episodes?[index].imageUrl ??
+                              podcast.image,
                         );
                   },
                 ),

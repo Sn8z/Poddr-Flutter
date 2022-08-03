@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:podcast_search/podcast_search.dart';
@@ -32,7 +33,7 @@ class ToplistPage extends ConsumerWidget {
                     controller: ScrollController(),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3),
+                            crossAxisCount: 2),
                     itemCount: charts.items.length,
                     padding: const EdgeInsets.only(
                       bottom: 90,
@@ -40,25 +41,35 @@ class ToplistPage extends ConsumerWidget {
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
-                          context.goNamed('podcast', queryParams: {
+                          context.pushNamed('podcast', queryParams: {
                             'podcastUrl': charts.items[index].feedUrl!
                           });
                         },
-                        child: Container(
-                          margin: const EdgeInsets.all(8),
-                          clipBehavior: Clip.hardEdge,
-                          decoration: const BoxDecoration(
-                              color: Color.fromARGB(255, 15, 15, 15),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(18),
-                              )),
-                          child: Column(
-                            children: [
-                              Image.network(
-                                  charts.items[index].artworkUrl100 ?? ""),
-                              Text(charts.items[index].artistName ?? "Podcast"),
-                            ],
-                          ),
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl: charts.items[index].artworkUrl600 ??
+                                  charts.items[index].artworkUrl ??
+                                  "",
+                              fit: BoxFit.contain,
+                              errorWidget: (context, url, error) {
+                                return Image.asset(
+                                    'assets/images/placeholder.png');
+                              },
+                              placeholder: (context, url) {
+                                return const CircularProgressIndicator();
+                              },
+                            ),
+                            Positioned(
+                              child: Text(
+                                charts.items[index].artistName ?? "",
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              bottom: 0,
+                              left: 0,
+                            )
+                          ],
                         ),
                       );
                     },

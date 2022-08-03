@@ -36,7 +36,7 @@ class BottomNav extends ConsumerWidget {
         children: menuItems.map((m) {
           final bool isActive = location == m.path;
           return IconButton(
-            iconSize: isActive ? 36 : 28,
+            iconSize: 32,
             tooltip: m.title,
             onPressed: () => _updateLocation(m.path),
             icon: isActive

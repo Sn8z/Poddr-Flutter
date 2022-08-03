@@ -28,17 +28,24 @@ class ApiService {
     return podcastSearch.search(
       query,
       country: Country.SWEDEN,
+      explicit: true,
+      limit: 30,
     );
   }
 
   Future<SearchResult> charts() {
-    return podcastSearch.charts();
+    return podcastSearch.charts(
+      country: Country.SWEDEN,
+      explicit: true,
+      limit: 30,
+    );
   }
 
   Future<Podcast> loadFeed(String url) {
     return Podcast.loadFeed(
       url: url,
       userAgent: getUserAgent(),
+      timeout: 30000,
     );
   }
 }
