@@ -47,7 +47,6 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                 },
               ),
             ),
-            Text(searchController.text),
             Expanded(
               child: ListView(
                   children: List.generate(result.resultCount, (index) {
@@ -70,8 +69,24 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                           return const CircularProgressIndicator();
                         },
                       ),
-                      title: Text(podcast.artistName ?? "Artist"),
-                      subtitle: Text(podcast.trackName ?? "Track"),
+                      title: Text(
+                        podcast.artistName ?? "Artist",
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Text(
+                        podcast.trackName ?? "Track",
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                      trailing: IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.favorite_border_rounded),
+                      ),
                     ),
                   ),
                 );

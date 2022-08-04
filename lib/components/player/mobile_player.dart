@@ -73,18 +73,21 @@ class MobilePlayer extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          player.currentPodcast,
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
+                    Flexible(
+                      fit: FlexFit.tight,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            player.currentPodcast,
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
-                        ),
-                        Text(player.currentEpisode),
-                      ],
+                          Text(player.currentEpisode),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 70,

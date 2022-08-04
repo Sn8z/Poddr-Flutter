@@ -62,18 +62,43 @@ class FavouritesPage extends ConsumerWidget {
           return CustomScrollView(
             slivers: [
               SliverAppBar(
-                floating: true,
                 pinned: true,
-                flexibleSpace: Container(
-                  color: Colors.amber,
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      debugPrint('FAB clicked');
-                    },
-                    child: const Icon(Icons.plus_one_rounded),
+                snap: false,
+                floating: false,
+                expandedHeight: 200.0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(60),
+                  bottomRight: Radius.circular(60),
+                )),
+                flexibleSpace: FlexibleSpaceBar(
+                  title: Text(
+                    'Favourites',
+                    style: TextStyle(color: Theme.of(context).primaryColor),
                   ),
+                  background: Stack(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.amber,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(60),
+                            bottomRight: Radius.circular(60),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: -15,
+                        right: 15,
+                        child: FloatingActionButton(
+                          onPressed: () {},
+                          child: Icon(Icons.play_arrow_rounded),
+                        ),
+                      )
+                    ],
+                  ),
+                  collapseMode: CollapseMode.pin,
                 ),
-                expandedHeight: 200,
               ),
               SliverList(
                 delegate: SliverChildBuilderDelegate(

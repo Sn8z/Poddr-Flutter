@@ -5,6 +5,7 @@ import 'package:poddr/components/base.dart';
 import 'package:poddr/components/header.dart';
 import 'package:poddr/helpers/user_agent.dart';
 import 'package:poddr/services/auth_service.dart';
+import 'package:poddr/services/snackbar_service.dart';
 import 'package:poddr/services/theme_service.dart';
 
 class SettingsPage extends ConsumerWidget {
@@ -59,9 +60,22 @@ class SettingsPage extends ConsumerWidget {
               color: Theme.of(context).primaryColor,
             ),
             SelectableText(getUserAgent()),
+            ElevatedButton(
+              onPressed: () {
+                SnackbarService().successSnack(context);
+              },
+              child: const Text("Snack"),
+            ),
+            Divider(
+              thickness: 2,
+              endIndent: 26,
+              indent: 26,
+              color: Theme.of(context).primaryColor,
+            ),
             Expanded(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Consumer(builder: (context, ref, child) {
                     return ElevatedButton(
@@ -70,17 +84,11 @@ class SettingsPage extends ConsumerWidget {
                     );
                   }),
                   ElevatedButton(
-                    onPressed: () => context.go("/signin"),
+                    onPressed: () => context.push("/signin"),
                     child: const Text("Log in"),
                   ),
                 ],
               ),
-            ),
-            Divider(
-              thickness: 2,
-              endIndent: 26,
-              indent: 26,
-              color: Theme.of(context).primaryColor,
             ),
           ],
         ),

@@ -58,7 +58,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
               Padding(
-                padding: EdgeInsets.all(80.0),
+                padding: EdgeInsets.all(40.0),
                 child: LoginForm(),
               ),
             ],
@@ -97,75 +97,58 @@ class LoginFormState extends ConsumerState<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Text(
-            "Log In",
-            style: Theme.of(context).textTheme.headline5,
-          ),
-          const SizedBox(height: 40),
-          CustomInputField(
-            label: "Email",
-            prefixIcon: const Icon(Icons.email_outlined),
-            textController: emailController,
-            onChanged: (value) {
-              emailController.text = value.toString().trim();
-            },
-            onSubmitted: (value) {
-              login();
-            },
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          CustomInputField(
-            label: "Password",
-            prefixIcon: const Icon(Icons.password_outlined),
-            textController: passwordController,
-            keyboardType: TextInputType.visiblePassword,
-            isPassword: true,
-            onChanged: (value) {
-              passwordController.text = value.toString().trim();
-            },
-            onSubmitted: (value) {
-              login();
-            },
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          ElevatedButton(
-            onPressed: () {
-              print('UI Sign In with Email/PW');
-              login();
-            },
-            child: const Text("Sign In"),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              print('UI Anon signin');
-              ref.read(authProvider).signInAnonymously();
-            },
-            child: const Text("Sign In Anonymously",
-                overflow: TextOverflow.ellipsis),
-          ),
-          const Text("- Or -"),
-          const CustomButton(),
-          ElevatedButton(
-            onPressed: () {
-              SnackbarService().successSnack(context);
-            },
-            child: Text("Snack"),
-          ),
-          TextButton(
-            onPressed: () {
-              context.go('/');
-            },
-            child: const Text('Continue without logging in'),
-          )
-        ],
-      ),
+    return Column(
+      children: [
+        Text(
+          "Log In",
+          style: Theme.of(context).textTheme.headline5,
+        ),
+        const SizedBox(height: 40),
+        CustomInputField(
+          label: "Email",
+          prefixIcon: const Icon(Icons.email_outlined),
+          textController: emailController,
+          onChanged: (value) {
+            emailController.text = value.toString().trim();
+          },
+          onSubmitted: (value) {
+            login();
+          },
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        CustomInputField(
+          label: "Password",
+          prefixIcon: const Icon(Icons.password_outlined),
+          textController: passwordController,
+          keyboardType: TextInputType.visiblePassword,
+          isPassword: true,
+          onChanged: (value) {
+            passwordController.text = value.toString().trim();
+          },
+          onSubmitted: (value) {
+            login();
+          },
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        ElevatedButton(
+          onPressed: () {
+            print('UI Sign In with Email/PW');
+            login();
+          },
+          child: const Text("Sign In"),
+        ),
+        const Text("- Or -"),
+        TextButton(
+          onPressed: () {
+            context.go('/');
+          },
+          child: const Text('Continue without logging in'),
+        )
+      ],
     );
   }
 
