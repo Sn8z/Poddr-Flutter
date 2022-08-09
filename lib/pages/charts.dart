@@ -56,17 +56,13 @@ class ToplistPage extends ConsumerWidget {
                         child: Container(
                           margin: const EdgeInsets.all(18.0),
                           clipBehavior: Clip.hardEdge,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(20),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                    blurStyle: BlurStyle.outer,
-                                    blurRadius: 10,
-                                    spreadRadius: 0,
-                                    color: Colors.black)
-                              ]),
+                          decoration: const BoxDecoration(boxShadow: [
+                            BoxShadow(
+                                blurStyle: BlurStyle.outer,
+                                blurRadius: 10,
+                                spreadRadius: 0,
+                                color: Colors.black)
+                          ]),
                           child: Stack(
                             alignment: Alignment.center,
                             children: [
@@ -84,12 +80,19 @@ class ToplistPage extends ConsumerWidget {
                                 },
                               ),
                               Positioned(
-                                child: Text(
-                                  charts.items[index].artistName ?? "",
-                                  overflow: TextOverflow.ellipsis,
-                                ),
                                 bottom: 0,
                                 left: 0,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    charts.items[index].artistName ?? "",
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
                               )
                             ],
                           ),
@@ -100,7 +103,7 @@ class ToplistPage extends ConsumerWidget {
                 ),
               );
             }, error: (e, st) {
-              return Text("Error");
+              return const Text("Error");
             }, loading: () {
               return const LinearProgressIndicator();
             }),

@@ -118,7 +118,9 @@ class _SideNavState extends State<SideNav> {
           Consumer(
             builder: (context, ref, child) {
               return CachedNetworkImage(
-                imageUrl: ref.watch(playbackProvider).imageUrl,
+                imageUrl: ref.watch(
+                  playbackProvider.select((value) => value.imageUrl),
+                ),
                 fit: BoxFit.contain,
                 errorWidget: (context, url, error) {
                   return Image.asset('assets/images/placeholder.png');

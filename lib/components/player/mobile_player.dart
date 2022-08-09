@@ -51,6 +51,51 @@ class MobilePlayer extends ConsumerWidget {
                     SizedBox(
                       height: 70,
                       width: 70,
+                      child: CachedNetworkImage(
+                        imageUrl: player.imageUrl,
+                        fit: BoxFit.contain,
+                        errorWidget: (context, url, error) {
+                          return Image.asset('assets/images/placeholder.png');
+                        },
+                        placeholder: (context, url) {
+                          return const CircularProgressIndicator();
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Flexible(
+                      fit: FlexFit.tight,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            player.currentEpisode,
+                            softWrap: false,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            player.currentPodcast,
+                            softWrap: false,
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    SizedBox(
+                      height: 70,
+                      width: 70,
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
@@ -71,36 +116,6 @@ class MobilePlayer extends ConsumerWidget {
                               visible: player.isLoading,
                               child: const CircularProgressIndicator()),
                         ],
-                      ),
-                    ),
-                    Flexible(
-                      fit: FlexFit.tight,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            player.currentPodcast,
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          Text(player.currentEpisode),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 70,
-                      width: 70,
-                      child: CachedNetworkImage(
-                        imageUrl: player.imageUrl,
-                        fit: BoxFit.contain,
-                        errorWidget: (context, url, error) {
-                          return Image.asset('assets/images/placeholder.png');
-                        },
-                        placeholder: (context, url) {
-                          return const CircularProgressIndicator();
-                        },
                       ),
                     ),
                   ],

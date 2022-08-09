@@ -66,35 +66,17 @@ class FavouritesPage extends ConsumerWidget {
                 snap: false,
                 floating: false,
                 expandedHeight: 200.0,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(60),
-                  bottomRight: Radius.circular(60),
-                )),
                 flexibleSpace: FlexibleSpaceBar(
-                  title: Text(
+                  title: const Text(
                     'Favourites',
-                    style: TextStyle(color: Theme.of(context).primaryColor),
                   ),
                   background: Stack(
                     children: [
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Colors.amber,
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(60),
-                            bottomRight: Radius.circular(60),
-                          ),
                         ),
                       ),
-                      Positioned(
-                        bottom: -15,
-                        right: 15,
-                        child: FloatingActionButton(
-                          onPressed: () {},
-                          child: Icon(Icons.play_arrow_rounded),
-                        ),
-                      )
                     ],
                   ),
                   collapseMode: CollapseMode.pin,
@@ -105,6 +87,7 @@ class FavouritesPage extends ConsumerWidget {
                   (context, index) {
                     return Card(
                       child: ListTile(
+                        hoverColor: Colors.red.shade400,
                         leading: const Icon(Icons.podcasts_rounded),
                         title: Text('Item #$index'),
                         trailing: IconButton(

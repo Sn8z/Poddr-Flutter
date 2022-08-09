@@ -10,7 +10,6 @@ class DesktopPlayer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final player = ref.watch(playbackProvider);
-
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.dark
