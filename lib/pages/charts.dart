@@ -1,11 +1,10 @@
 import 'dart:developer';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:podcast_search/podcast_search.dart';
 import 'package:poddr/components/base.dart';
-import 'package:poddr/components/header.dart';
+import 'package:poddr/components/card.dart';
 import 'package:poddr/helpers/breakpoints.dart';
 import 'package:poddr/services/api_service.dart';
 import 'package:go_router/go_router.dart';
@@ -28,8 +27,21 @@ class ToplistPage extends ConsumerWidget {
         }
         return Column(
           children: [
-            const Header(
-              title: 'Charts',
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Charts',
+                  style: TextStyle(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
+                    fontSize: 50,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
             charts.when(data: (SearchResult charts) {
               inspect(charts);
@@ -41,62 +53,27 @@ class ToplistPage extends ConsumerWidget {
                   child: GridView.builder(
                     controller: ScrollController(),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: gridWidth),
+                      crossAxisCount: gridWidth,
+                      childAspectRatio: 0.8,
+                    ),
                     itemCount: charts.items.length,
                     padding: const EdgeInsets.only(
                       bottom: 90,
                     ),
                     itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: () {
-                          context.pushNamed('podcast', queryParams: {
-                            'podcastUrl': charts.items[index].feedUrl!
-                          });
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.all(18.0),
-                          clipBehavior: Clip.hardEdge,
-                          decoration: const BoxDecoration(boxShadow: [
-                            BoxShadow(
-                                blurStyle: BlurStyle.outer,
-                                blurRadius: 10,
-                                spreadRadius: 0,
-                                color: Colors.black)
-                          ]),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              CachedNetworkImage(
-                                imageUrl: charts.items[index].artworkUrl600 ??
-                                    charts.items[index].artworkUrl ??
-                                    "",
-                                fit: BoxFit.contain,
-                                errorWidget: (context, url, error) {
-                                  return Image.asset(
-                                      'assets/images/placeholder.png');
-                                },
-                                placeholder: (context, url) {
-                                  return const CircularProgressIndicator();
-                                },
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                left: 0,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    charts.items[index].artistName ?? "",
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
+                      Item podcast = charts.items[index];
+
+                      return Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: CardComponent(
+                            title: podcast.trackName ?? '',
+                            subtitle: podcast.artistName ?? '',
+                            imgUrl: podcast.artworkUrl600,
+                            onTap: () {
+                              context.pushNamed('podcast', queryParams: {
+                                'podcastUrl': podcast.feedUrl!
+                              });
+                            }),
                       );
                     },
                   ),

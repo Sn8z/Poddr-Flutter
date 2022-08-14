@@ -14,16 +14,40 @@ class PlayerPage extends ConsumerWidget {
     final player = ref.watch(playbackProvider);
     return Scaffold(
       body: SafeArea(
-        child: SizedBox.expand(
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: Theme.of(context).brightness == Brightness.dark
+                  ? [Colors.grey.shade900, Colors.grey.shade800]
+                  : [Colors.grey.shade300, Colors.grey.shade100],
+            ),
+          ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              IconButton(
-                onPressed: () {
-                  context.canPop() ? context.pop() : context.go('/');
-                },
-                icon: const Icon(Icons.keyboard_arrow_up_rounded),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        context.canPop() ? context.pop() : context.go('/');
+                      },
+                      icon: const Icon(Icons.arrow_back_rounded),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        context.canPop() ? context.pop() : context.go('/');
+                      },
+                      icon: const Icon(Icons.more_horiz_rounded),
+                    )
+                  ],
+                ),
               ),
               Text(
                 player.currentPodcast,
@@ -46,10 +70,11 @@ class PlayerPage extends ConsumerWidget {
                 decoration: const BoxDecoration(
                   boxShadow: [
                     BoxShadow(
-                        blurStyle: BlurStyle.outer,
-                        blurRadius: 20,
-                        spreadRadius: 0,
-                        color: Colors.black)
+                      blurStyle: BlurStyle.outer,
+                      blurRadius: 20,
+                      spreadRadius: 0,
+                      color: Colors.black,
+                    )
                   ],
                   borderRadius: BorderRadius.all(
                     Radius.circular(16.0),
@@ -190,6 +215,12 @@ class PlayerPage extends ConsumerWidget {
                         SnackbarService().successSnack(context);
                       },
                       icon: const Icon(Icons.favorite_outline_outlined),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        SnackbarService().successSnack(context);
+                      },
+                      icon: const Icon(Icons.bar_chart_rounded),
                     ),
                   ],
                 ),

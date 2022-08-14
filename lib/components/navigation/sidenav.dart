@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:poddr/components/card.dart';
 import 'package:poddr/services/audio_service.dart';
 
 class SideNav extends StatefulWidget {
@@ -27,12 +28,6 @@ class _SideNavState extends State<SideNav> {
         color: Theme.of(context).brightness == Brightness.dark
             ? const Color.fromARGB(255, 30, 30, 30)
             : const Color.fromARGB(255, 200, 200, 200),
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 12.0,
-            blurStyle: BlurStyle.outer,
-          ),
-        ],
       ),
       child: Column(
         children: [

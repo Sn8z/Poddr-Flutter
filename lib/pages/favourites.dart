@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poddr/components/base.dart';
 import 'package:poddr/components/header.dart';
+import 'package:poddr/components/card.dart';
 import 'package:poddr/helpers/breakpoints.dart';
 
 class FavouritesPage extends ConsumerWidget {
@@ -14,44 +15,35 @@ class FavouritesPage extends ConsumerWidget {
         if (constraints.maxWidth > Breakpoints.tabletScreen) {
           return Column(
             children: [
-              const Header(
-                title: 'Favourites',
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Favourites',
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
+                      fontSize: 50,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
               Expanded(
                 child: GridView.count(
                   controller: ScrollController(),
                   childAspectRatio: 0.8,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
                   crossAxisCount:
                       constraints.maxWidth > Breakpoints.desktopScreen ? 5 : 4,
                   children: List.generate(100, (index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(26),
-                      child: Container(
-                        clipBehavior: Clip.hardEdge,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          boxShadow: const [
-                            BoxShadow(
-                              blurRadius: 12.0,
-                              blurStyle: BlurStyle.outer,
-                            ),
-                          ],
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(12)),
-                        ),
-                        child: Column(
-                          children: [
-                            Image.network(
-                              'https://podmestorage.blob.core.windows.net/podcast-images/F9378BFC404B1498E9E491524DDA7A2C_medium.jpg',
-                              fit: BoxFit.fitWidth,
-                            ),
-                            Text(
-                              'Item $index',
-                              style: Theme.of(context).textTheme.headline5,
-                            ),
-                          ],
-                        ),
-                      ),
+                    return CardComponent(
+                      title: 'Title',
+                      subtitle: 'Music',
+                      onTap: () {},
                     );
                   }),
                 ),
@@ -66,6 +58,13 @@ class FavouritesPage extends ConsumerWidget {
                 snap: false,
                 floating: false,
                 expandedHeight: 200.0,
+                actions: <Widget>[
+                  IconButton(
+                    icon: const Icon(Icons.add_circle),
+                    tooltip: 'Add new entry',
+                    onPressed: () {/* ... */},
+                  ),
+                ],
                 flexibleSpace: FlexibleSpaceBar(
                   title: const Text(
                     'Favourites',

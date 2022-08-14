@@ -19,13 +19,13 @@ Future<void> main() async {
   if (UniversalPlatform.isAndroid | UniversalPlatform.isIOS) {
     await JustAudioBackground.init(
       androidNotificationChannelId: 'com.sn8z.poddr.channel.audio',
-      androidNotificationChannelName: 'Audio playback',
-      androidNotificationOngoing: true,
+      androidNotificationChannelName: 'Poddr',
+      androidNotificationOngoing: false,
     );
   }
 
   bool isLinuxOrWin = UniversalPlatform.isLinux | UniversalPlatform.isWindows;
-  print('Is Linux or win? -> ' + isLinuxOrWin.toString());
+  debugPrint('Is Linux or win? -> $isLinuxOrWin.toString()');
   await Firebase.initializeApp(
     options: isLinuxOrWin
         ? DefaultFirebaseOptions.web

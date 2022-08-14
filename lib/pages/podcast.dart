@@ -63,6 +63,7 @@ class PodcastWidget extends ConsumerWidget {
               return ListTile(
                 leading: const Icon(Icons.podcasts_rounded),
                 title: Text(ep.title),
+                hoverColor: Colors.red.shade400,
                 trailing: IconButton(
                   icon: const Icon(Icons.play_arrow),
                   onPressed: () {

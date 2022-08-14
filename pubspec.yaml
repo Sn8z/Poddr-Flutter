@@ -44,10 +44,10 @@ dependencies:
     git:
       url: https://github.com/bleonard252/just_audio_mpv
       ref: afb2aa129ae62756042c58a227b519c856281437
-  just_audio_windows: ^0.1.0
   just_audio_background: ^0.0.1-beta.7
   audio_session: ^0.1.10
   cached_network_image: ^3.2.1
+  just_audio_windows: ^0.1.0
 
 dependency_overrides:
   dio: "4.0.4"

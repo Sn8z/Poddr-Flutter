@@ -15,6 +15,9 @@ class DesktopPlayer extends ConsumerWidget {
         color: Theme.of(context).brightness == Brightness.dark
             ? const Color.fromARGB(180, 30, 30, 30)
             : const Color.fromARGB(180, 220, 220, 220),
+        border: Border(
+          top: BorderSide(color: Theme.of(context).primaryColor, width: 2),
+        ),
       ),
       clipBehavior: Clip.hardEdge,
       child: BackdropFilter(
@@ -67,12 +70,35 @@ class DesktopPlayer extends ConsumerWidget {
                     ],
                   ),
                 ),
-                Expanded(
+                Flexible(
                   flex: 3,
+                  fit: FlexFit.tight,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Column(
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                player.currentPodcast,
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const Text(' - '),
+                              Text(
+                                player.currentEpisode,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                         Slider(
                           min: 0.0,
                           max: player.duration.inSeconds.toDouble(),
@@ -87,16 +113,17 @@ class DesktopPlayer extends ConsumerWidget {
                             ref.read(playbackProvider.notifier).seek(v.toInt());
                           },
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(player.getPosition()),
-                            Text(player.getDuration()),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(player.getPosition()),
+                              Text(player.getDuration()),
+                            ],
+                          ),
                         ),
-                        Text(player.currentPodcast),
-                        Text(player.currentEpisode),
                       ],
                     ),
                   ),

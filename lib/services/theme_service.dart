@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:math';
 
 class ThemeModeNotifier extends StateNotifier<ThemeMode> {
-  ThemeModeNotifier() : super(ThemeMode.dark);
+  ThemeModeNotifier() : super(ThemeMode.dark) {
+    debugPrint('Theme notifier constructor!');
+  }
 
   void setDarkMode() {
     state = ThemeMode.dark;
@@ -26,15 +28,26 @@ final themeModeProvider =
 ThemeData defaultLightTheme = ThemeData(
   brightness: Brightness.light,
   primarySwatch: Colors.red,
-  primaryColor: Colors.red[400],
+  scaffoldBackgroundColor: const Color.fromARGB(255, 220, 220, 220),
   fontFamily: 'Manrope',
+  sliderTheme: const SliderThemeData(
+    activeTrackColor: Colors.red,
+    inactiveTrackColor: Color.fromARGB(255, 200, 200, 200),
+    thumbColor: Color.fromARGB(255, 230, 230, 230),
+  ),
 );
 
 ThemeData defaultDarkTheme = ThemeData(
   brightness: Brightness.dark,
   primarySwatch: Colors.amber,
-  primaryColor: Colors.orange[200],
+  primaryColor: Colors.amber[600],
+  scaffoldBackgroundColor: const Color.fromARGB(255, 20, 20, 20),
   fontFamily: 'Manrope',
+  sliderTheme: const SliderThemeData(
+    activeTrackColor: Colors.amber,
+    inactiveTrackColor: Color.fromARGB(255, 45, 45, 45),
+    thumbColor: Color.fromARGB(255, 220, 220, 220),
+  ),
 );
 
 class Themes {
