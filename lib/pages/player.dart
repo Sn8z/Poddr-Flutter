@@ -2,6 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:poddr/components/player/current_episode.dart';
+import 'package:poddr/components/player/current_podcast.dart';
+import 'package:poddr/components/player/duration.dart';
+import 'package:poddr/components/player/player_circular_loading.dart';
+import 'package:poddr/components/player/player_play_button.dart';
+import 'package:poddr/components/player/player_progress_slider.dart';
+import 'package:poddr/components/player/player_volume_slider.dart';
+import 'package:poddr/components/player/position.dart';
 import 'package:poddr/services/audio_service.dart';
 import 'package:poddr/services/snackbar_service.dart';
 import 'package:universal_platform/universal_platform.dart';
@@ -11,7 +19,10 @@ class PlayerPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final player = ref.watch(playbackProvider);
+    final playerImg =
+        ref.watch(playbackProvider.select((value) => value.imageUrl));
+    final playerPlaybackRate =
+        ref.watch(playbackProvider.select((value) => value.playbackRate));
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -49,20 +60,8 @@ class PlayerPage extends ConsumerWidget {
                   ],
                 ),
               ),
-              Text(
-                player.currentPodcast,
-                style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                player.currentEpisode,
-                style: const TextStyle(
-                  fontSize: 18,
-                ),
-              ),
+              const CurrentPodcastText(),
+              const CurrentEpisodeText(),
               const SizedBox(height: 40),
               Container(
                 width: 250,
@@ -81,7 +80,7 @@ class PlayerPage extends ConsumerWidget {
                   ),
                 ),
                 child: CachedNetworkImage(
-                  imageUrl: player.imageUrl,
+                  imageUrl: playerImg,
                   fit: BoxFit.contain,
                   errorWidget: (context, url, error) {
                     return Image.asset('assets/images/placeholder.png');
@@ -102,32 +101,9 @@ class PlayerPage extends ConsumerWidget {
                       icon: const Icon(Icons.skip_previous_rounded)),
                   Stack(
                     alignment: Alignment.center,
-                    children: [
-                      player.isPlaying
-                          ? IconButton(
-                              iconSize: 52,
-                              onPressed: () {
-                                ref.read(playbackProvider.notifier).pause();
-                              },
-                              icon: const Icon(Icons.pause_circle_rounded),
-                            )
-                          : IconButton(
-                              iconSize: 52,
-                              onPressed: () {
-                                ref.read(playbackProvider.notifier).play();
-                              },
-                              icon: const Icon(Icons.play_circle_rounded),
-                            ),
-                      Visibility(
-                        visible: player.isLoading,
-                        child: const SizedBox(
-                          height: 60,
-                          width: 60,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 6.0,
-                          ),
-                        ),
-                      ),
+                    children: const [
+                      PlayerPlayButton(),
+                      PlayerCircularLoading(),
                     ],
                   ),
                   IconButton(
@@ -138,28 +114,15 @@ class PlayerPage extends ConsumerWidget {
               const SizedBox(
                 height: 20,
               ),
-              Slider(
-                min: 0.0,
-                max: player.duration.inSeconds.toDouble(),
-                value: player.position.inSeconds.toDouble(),
-                onChangeStart: (_) {
-                  ref.read(playbackProvider.notifier).pause();
-                },
-                onChangeEnd: (_) {
-                  ref.read(playbackProvider.notifier).play();
-                },
-                onChanged: (double v) {
-                  ref.read(playbackProvider.notifier).seek(v.toInt());
-                },
-              ),
+              const PlayerProgressSlider(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(player.getPosition()),
-                    Text(player.getDuration()),
+                  children: const [
+                    PositionTimer(),
+                    DurationTimer(),
                   ],
                 ),
               ),
@@ -176,7 +139,7 @@ class PlayerPage extends ConsumerWidget {
                       onPressed: () {},
                       icon: const Icon(Icons.shuffle_rounded),
                     ),
-                    Text(player.playbackRate.toString()),
+                    Text(playerPlaybackRate.toString()),
                     IconButton(
                       onPressed: () {
                         showModalBottomSheet(
@@ -231,17 +194,8 @@ class PlayerPage extends ConsumerWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.volume_up_rounded),
-                      Slider(
-                        min: 0.0,
-                        max: 1.0,
-                        value: player.volume,
-                        onChanged: (double v) {
-                          debugPrint("Setting volume to $v");
-                          ref.read(playbackProvider.notifier).setVolume(v);
-                        },
-                      ),
+                    children: const [
+                      PlayerVolumeSlider(),
                     ],
                   ),
                 ),

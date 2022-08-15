@@ -61,8 +61,7 @@ class SideRail extends ConsumerWidget {
               children: menuItems.map((m) {
                 final bool isActive = location == m.path;
                 return IconButton(
-                  iconSize: isActive ? 36 : 28,
-                  tooltip: m.title,
+                  iconSize: 32,
                   onPressed: () => _updateLocation(m.path),
                   icon: isActive
                       ? ShaderMask(
@@ -83,7 +82,8 @@ class SideRail extends ConsumerWidget {
           Consumer(
             builder: (context, ref, child) {
               return CachedNetworkImage(
-                imageUrl: ref.watch(playbackProvider).imageUrl,
+                imageUrl: ref
+                    .watch(playbackProvider.select((value) => value.imageUrl)),
                 fit: BoxFit.contain,
                 errorWidget: (context, url, error) {
                   return Image.asset('assets/images/placeholder.png');

@@ -1,9 +1,13 @@
 import 'dart:ui';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:poddr/components/player/current_episode.dart';
+import 'package:poddr/components/player/current_podcast.dart';
+import 'package:poddr/components/player/player_circular_loading.dart';
+import 'package:poddr/components/player/player_play_button.dart';
+import 'package:poddr/components/player/player_progress_linear.dart';
 import 'package:poddr/services/audio_service.dart';
 
 class MobilePlayer extends ConsumerWidget {
@@ -11,10 +15,9 @@ class MobilePlayer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final player = ref.watch(playbackProvider);
-    double playerProgress =
-        player.position.inSeconds.toInt() / player.duration.inSeconds.toInt();
-    playerProgress = playerProgress.isNaN ? 0.0 : playerProgress;
+    final playerImg =
+        ref.watch(playbackProvider.select((value) => value.imageUrl));
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
@@ -41,9 +44,7 @@ class MobilePlayer extends ConsumerWidget {
             ),
             child: Column(
               children: [
-                LinearProgressIndicator(
-                  value: playerProgress,
-                ),
+                const PlayerProgressLinear(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -52,7 +53,7 @@ class MobilePlayer extends ConsumerWidget {
                       height: 70,
                       width: 70,
                       child: CachedNetworkImage(
-                        imageUrl: player.imageUrl,
+                        imageUrl: playerImg,
                         fit: BoxFit.contain,
                         errorWidget: (context, url, error) {
                           return Image.asset('assets/images/placeholder.png');
@@ -70,23 +71,9 @@ class MobilePlayer extends ConsumerWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            player.currentEpisode,
-                            softWrap: false,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            player.currentPodcast,
-                            softWrap: false,
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontSize: 14,
-                            ),
-                          ),
+                        children: const [
+                          CurrentEpisodeText(),
+                          CurrentPodcastText(),
                         ],
                       ),
                     ),
@@ -98,23 +85,9 @@ class MobilePlayer extends ConsumerWidget {
                       width: 70,
                       child: Stack(
                         alignment: Alignment.center,
-                        children: [
-                          player.isPlaying
-                              ? IconButton(
-                                  onPressed: () {
-                                    ref.read(playbackProvider.notifier).pause();
-                                  },
-                                  icon: const Icon(Icons.pause_rounded),
-                                )
-                              : IconButton(
-                                  onPressed: () {
-                                    ref.read(playbackProvider.notifier).play();
-                                  },
-                                  icon: const Icon(Icons.play_arrow_rounded),
-                                ),
-                          Visibility(
-                              visible: player.isLoading,
-                              child: const CircularProgressIndicator()),
+                        children: const [
+                          PlayerPlayButton(),
+                          PlayerCircularLoading(),
                         ],
                       ),
                     ),

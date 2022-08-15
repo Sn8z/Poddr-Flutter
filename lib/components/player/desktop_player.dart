@@ -1,23 +1,25 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:poddr/services/audio_service.dart';
+import 'package:poddr/components/player/current_episode.dart';
+import 'package:poddr/components/player/current_podcast.dart';
+import 'package:poddr/components/player/duration.dart';
+import 'package:poddr/components/player/player_circular_loading.dart';
+import 'package:poddr/components/player/player_play_button.dart';
+import 'package:poddr/components/player/player_progress_slider.dart';
+import 'package:poddr/components/player/player_volume_slider.dart';
+import 'package:poddr/components/player/position.dart';
 import 'package:universal_platform/universal_platform.dart';
 
-class DesktopPlayer extends ConsumerWidget {
+class DesktopPlayer extends StatelessWidget {
   const DesktopPlayer({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final player = ref.watch(playbackProvider);
+  Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.dark
             ? const Color.fromARGB(180, 30, 30, 30)
             : const Color.fromARGB(180, 220, 220, 220),
-        border: Border(
-          top: BorderSide(color: Theme.of(context).primaryColor, width: 2),
-        ),
       ),
       clipBehavior: Clip.hardEdge,
       child: BackdropFilter(
@@ -27,12 +29,6 @@ class DesktopPlayer extends ConsumerWidget {
         ),
         child: Column(
           children: [
-            Visibility(
-              visible: player.isLoading,
-              child: const LinearProgressIndicator(
-                minHeight: 4.0,
-              ),
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -41,32 +37,9 @@ class DesktopPlayer extends ConsumerWidget {
                   flex: 1,
                   child: Stack(
                     alignment: Alignment.center,
-                    children: [
-                      player.isPlaying
-                          ? IconButton(
-                              iconSize: 52,
-                              onPressed: () {
-                                ref.read(playbackProvider.notifier).pause();
-                              },
-                              icon: const Icon(Icons.pause_circle_rounded),
-                            )
-                          : IconButton(
-                              iconSize: 52,
-                              onPressed: () {
-                                ref.read(playbackProvider.notifier).play();
-                              },
-                              icon: const Icon(Icons.play_circle_rounded),
-                            ),
-                      Visibility(
-                        visible: player.isLoading,
-                        child: const SizedBox(
-                          height: 60,
-                          width: 60,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 6.0,
-                          ),
-                        ),
-                      ),
+                    children: const [
+                      PlayerCircularLoading(),
+                      PlayerPlayButton(),
                     ],
                   ),
                 ),
@@ -80,47 +53,22 @@ class DesktopPlayer extends ConsumerWidget {
                         Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Row(
-                            children: [
-                              Text(
-                                player.currentPodcast,
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const Text(' - '),
-                              Text(
-                                player.currentEpisode,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                ),
-                              ),
+                            children: const [
+                              CurrentPodcastText(),
+                              Text(' - '),
+                              CurrentEpisodeText(),
                             ],
                           ),
                         ),
-                        Slider(
-                          min: 0.0,
-                          max: player.duration.inSeconds.toDouble(),
-                          value: player.position.inSeconds.toDouble(),
-                          onChangeStart: (_) {
-                            ref.read(playbackProvider.notifier).pause();
-                          },
-                          onChangeEnd: (_) {
-                            ref.read(playbackProvider.notifier).play();
-                          },
-                          onChanged: (double v) {
-                            ref.read(playbackProvider.notifier).seek(v.toInt());
-                          },
-                        ),
+                        const PlayerProgressSlider(),
                         Padding(
                           padding: const EdgeInsets.all(12),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(player.getPosition()),
-                              Text(player.getDuration()),
+                            children: const [
+                              PositionTimer(),
+                              DurationTimer(),
                             ],
                           ),
                         ),
@@ -134,17 +82,8 @@ class DesktopPlayer extends ConsumerWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.volume_up_rounded),
-                        Slider(
-                          min: 0.0,
-                          max: 1.0,
-                          value: player.volume,
-                          onChanged: (double v) {
-                            debugPrint("Setting volume to $v");
-                            ref.read(playbackProvider.notifier).setVolume(v);
-                          },
-                        ),
+                      children: const [
+                        PlayerVolumeSlider(),
                       ],
                     ),
                   ),

@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:podcast_search/podcast_search.dart';
@@ -49,35 +48,60 @@ class PodcastWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      children: [
-        Header(title: podcast.title ?? ""),
-        Expanded(
-          child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            controller: ScrollController(),
-            itemCount: podcast.episodes?.length,
-            itemBuilder: (BuildContext context, int index) {
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          pinned: true,
+          snap: false,
+          floating: false,
+          expandedHeight: 200.0,
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.add_circle),
+              tooltip: 'Add new entry',
+              onPressed: () {/* ... */},
+            ),
+          ],
+          flexibleSpace: FlexibleSpaceBar(
+            title: Text(
+              podcast.title ?? 'Podcast',
+            ),
+            background: Stack(
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.amber,
+                  ),
+                ),
+              ],
+            ),
+            collapseMode: CollapseMode.pin,
+          ),
+        ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
               Episode ep = podcast.episodes![index];
-              return ListTile(
-                leading: const Icon(Icons.podcasts_rounded),
-                title: Text(ep.title),
-                hoverColor: Colors.red.shade400,
-                trailing: IconButton(
-                  icon: const Icon(Icons.play_arrow),
-                  onPressed: () {
-                    ref.read(playbackProvider.notifier).loadAudio(
-                          url: podcast.episodes?[index].contentUrl ?? "",
-                          episode: podcast.episodes?[index].title ?? "",
-                          podcast: podcast.episodes?[index].author ?? "",
-                          imageUrl: podcast.episodes?[index].imageUrl ??
-                              podcast.image,
-                        );
-                  },
+              return Card(
+                child: ListTile(
+                  leading: const Icon(Icons.podcasts_rounded),
+                  title: Text(ep.title),
+                  trailing: IconButton(
+                    onPressed: () {
+                      ref.read(playbackProvider.notifier).loadAudio(
+                            url: podcast.episodes?[index].contentUrl ?? "",
+                            episode: podcast.episodes?[index].title ?? "",
+                            podcast: podcast.episodes?[index].author ?? "",
+                            imageUrl: podcast.episodes?[index].imageUrl ??
+                                podcast.image,
+                          );
+                    },
+                    icon: const Icon(Icons.play_arrow_rounded),
+                  ),
                 ),
               );
             },
+            childCount: podcast.episodes?.length,
           ),
         ),
       ],
