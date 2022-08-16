@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:podcast_search/podcast_search.dart';
 import 'package:poddr/components/base.dart';
 import 'package:poddr/components/header.dart';
+import 'package:poddr/components/sliver_app_bar.dart';
 import 'package:poddr/services/api_service.dart';
 import 'package:poddr/services/audio_service.dart';
 
@@ -49,34 +50,26 @@ class PodcastWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return CustomScrollView(
+      controller: ScrollController(),
       slivers: [
-        SliverAppBar(
-          pinned: true,
-          snap: false,
-          floating: false,
-          expandedHeight: 200.0,
-          actions: <Widget>[
+        CustomSliverBar(
+          title: podcast.title ?? '',
+          description: podcast.description ?? '',
+          image: podcast.image,
+          actions: [
             IconButton(
-              icon: const Icon(Icons.add_circle),
-              tooltip: 'Add new entry',
-              onPressed: () {/* ... */},
+              onPressed: () {},
+              icon: const Icon(Icons.arrow_back_rounded),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.play_arrow_rounded),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.keyboard_double_arrow_up_rounded),
             ),
           ],
-          flexibleSpace: FlexibleSpaceBar(
-            title: Text(
-              podcast.title ?? 'Podcast',
-            ),
-            background: Stack(
-              children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.amber,
-                  ),
-                ),
-              ],
-            ),
-            collapseMode: CollapseMode.pin,
-          ),
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(

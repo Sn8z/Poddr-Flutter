@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:poddr/components/base.dart';
 import 'package:poddr/components/header.dart';
+import 'package:poddr/components/user_info.dart';
 import 'package:poddr/helpers/user_agent.dart';
 import 'package:poddr/services/auth_service.dart';
 import 'package:poddr/services/snackbar_service.dart';
@@ -66,6 +68,13 @@ class SettingsPage extends ConsumerWidget {
               },
               child: const Text("Snack"),
             ),
+            Divider(
+              thickness: 2,
+              endIndent: 26,
+              indent: 26,
+              color: Theme.of(context).primaryColor,
+            ),
+            const UserInfoCard(),
             Divider(
               thickness: 2,
               endIndent: 26,
