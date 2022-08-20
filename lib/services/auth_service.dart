@@ -2,26 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+final fireProvider = Provider<FirebaseAuth>(
+  (ref) {
+    return FirebaseAuth.instance;
+  },
+);
+
 final authProvider = ChangeNotifierProvider(
-  (ref) => AuthService(ref),
+  (ref) {
+    return AuthService(ref.watch(fireProvider));
+  },
 );
 
 final userProvider = StreamProvider<User?>(
-  (ref) => ref.watch(authProvider).userStream,
+  (ref) => ref.watch(fireProvider).authStateChanges(),
 );
 
 class AuthService with ChangeNotifier {
-  final FirebaseAuth fbAuth = FirebaseAuth.instance;
+  final FirebaseAuth fbAuth;
   User? fbUser;
-  final Ref ref;
 
-  AuthService(this.ref) {
-    print('AuthService constructor');
+  AuthService(this.fbAuth) {
+    debugPrint('AuthService constructor');
   }
 
   User? get user => fbAuth.currentUser;
-
-  Stream<User?> get userStream => fbAuth.authStateChanges();
 
   bool isLoggedIn() {
     return fbAuth.currentUser != null;
@@ -35,16 +40,16 @@ class AuthService with ChangeNotifier {
 
   // Sign in with email and password
   Future<void> signIn(String email, String password) async {
-    print("Auth sign in -");
+    debugPrint("Auth sign in -");
     try {
       await fbAuth.signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
-      print(e.code);
-      print(e.message);
+      debugPrint(e.code);
+      debugPrint(e.message);
       switch (e.code) {
         case "invalid-email":
           {
-            return null;
+            debugPrint('invalid email');
           }
       }
     }
@@ -52,21 +57,21 @@ class AuthService with ChangeNotifier {
 
   // Sign in anonymously
   Future<void> signInAnonymously() async {
-    print("Auth Anon sign in -");
+    debugPrint("Auth Anon sign in -");
     try {
       await fbAuth.signInAnonymously();
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
   // Sign out
   Future<void> signOut() async {
-    print("Auth sign out -");
+    debugPrint("Auth sign out -");
     try {
       await fbAuth.signOut();
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 }

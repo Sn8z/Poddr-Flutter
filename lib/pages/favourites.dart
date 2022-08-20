@@ -1,15 +1,21 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:poddr/components/base.dart';
-import 'package:poddr/components/header.dart';
 import 'package:poddr/components/card.dart';
+import 'package:poddr/components/sliver_app_bar.dart';
 import 'package:poddr/helpers/breakpoints.dart';
+import 'package:poddr/services/db_service.dart';
 
 class FavouritesPage extends ConsumerWidget {
   const FavouritesPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final AsyncValue<List<dynamic>> favStream = ref.watch(favStreamProvider);
     return BaseWidget(
       child: LayoutBuilder(builder: (context, constraints) {
         if (constraints.maxWidth > Breakpoints.tabletScreen) {
@@ -52,53 +58,58 @@ class FavouritesPage extends ConsumerWidget {
           );
         } else {
           return CustomScrollView(
+            controller: ScrollController(),
             slivers: [
-              SliverAppBar(
-                pinned: true,
-                snap: false,
-                floating: false,
-                expandedHeight: 200.0,
-                actions: <Widget>[
-                  IconButton(
-                    icon: const Icon(Icons.add_circle),
-                    tooltip: 'Add new entry',
-                    onPressed: () {/* ... */},
-                  ),
-                ],
-                flexibleSpace: FlexibleSpaceBar(
-                  title: const Text(
-                    'Favourites',
-                  ),
-                  background: Stack(
-                    children: [
-                      Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.amber,
-                        ),
-                      ),
-                    ],
-                  ),
-                  collapseMode: CollapseMode.pin,
-                ),
-              ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return Card(
-                      child: ListTile(
-                        hoverColor: Colors.red.shade400,
-                        leading: const Icon(Icons.podcasts_rounded),
-                        title: Text('Item #$index'),
-                        trailing: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.play_arrow_rounded),
-                        ),
-                      ),
-                    );
-                  },
-                  childCount: 1000,
-                ),
-              ),
+              const CustomSliverBar(
+                  title: 'Favourites', description: 'Your favourites'),
+              favStream.when(data: (data) {
+                if (data.isEmpty) {
+                  return const Text('No favourites added');
+                } else {
+                  return SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        return Card(
+                          child: ListTile(
+                            leading: IconButton(
+                              onPressed: () {
+                                context.push(
+                                    '/podcast?podcastUrl=${data[index]?['rss']}');
+                              },
+                              icon: const Icon(Icons.view_comfy),
+                            ),
+                            title: Text(data[index]?['title']),
+                            trailing: IconButton(
+                              onPressed: () {
+                                ref
+                                    .read(favouritesProvider)
+                                    .removeFavourite(data[index]?['rss']);
+                              },
+                              icon: const Icon(Icons.cancel_rounded),
+                            ),
+                          ),
+                        );
+                      },
+                      childCount: data.length,
+                    ),
+                  );
+                }
+              }, error: (e, st) {
+                debugPrint(e.toString());
+                inspect(e);
+                inspect(st);
+                return SliverList(
+                  delegate: SliverChildListDelegate([
+                    Text(e.toString()),
+                  ]),
+                );
+              }, loading: () {
+                return SliverList(
+                  delegate: SliverChildListDelegate([
+                    const LinearProgressIndicator(),
+                  ]),
+                );
+              }),
             ],
           );
         }

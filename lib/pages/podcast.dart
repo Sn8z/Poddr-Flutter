@@ -7,6 +7,7 @@ import 'package:poddr/components/header.dart';
 import 'package:poddr/components/sliver_app_bar.dart';
 import 'package:poddr/services/api_service.dart';
 import 'package:poddr/services/audio_service.dart';
+import 'package:poddr/services/db_service.dart';
 
 class PodcastPage extends ConsumerWidget {
   const PodcastPage({Key? key, this.url = ""}) : super(key: key);
@@ -15,7 +16,7 @@ class PodcastPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    AsyncValue<Podcast> podcast = ref.watch(podcastProvider(url));
+    final AsyncValue<Podcast> podcast = ref.watch(podcastProvider(url));
     return BaseWidget(
       child: podcast.when(
         data: (Podcast p) {
@@ -66,8 +67,14 @@ class PodcastWidget extends ConsumerWidget {
               icon: const Icon(Icons.play_arrow_rounded),
             ),
             IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.keyboard_double_arrow_up_rounded),
+              onPressed: () {
+                ref.read(favouritesProvider).addFavourite(
+                      rss: podcast.url!,
+                      title: podcast.title!,
+                      image: podcast.image!,
+                    );
+              },
+              icon: const Icon(Icons.favorite_outline_rounded),
             ),
           ],
         ),

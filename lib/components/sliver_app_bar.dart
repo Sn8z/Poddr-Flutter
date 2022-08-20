@@ -67,24 +67,7 @@ class CustomSliverBar extends StatelessWidget {
                     ),
                   ),
                   Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.shuffle_rounded),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.play_arrow_rounded),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.open_in_browser_rounded),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.favorite_rounded),
-                      ),
-                    ],
+                    children: actions,
                   )
                 ],
               ),
