@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "77230078110",
+    "project_id": "poddr-5dee7",
+    "storage_bucket": "poddr-5dee7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77230078110:android:c1e224133d4bd5476e238f",
+        "android_client_info": {
+          "package_name": "com.example.poddr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77230078110-evgu8oi4npp6u4v8hiacda9eesabaacp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGH5uuq41mL4B6BQeM41rnvIsBpVD055U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77230078110-evgu8oi4npp6u4v8hiacda9eesabaacp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "77230078110-lo5pt4ls60utro9vp4uhnu1pdb1c1q38.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.poddr"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
