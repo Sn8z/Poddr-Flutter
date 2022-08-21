@@ -16,91 +16,90 @@ class SettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return BaseWidget(
-      child: Center(
-        child: Column(
-          children: [
-            const Header(
-              title: 'Settings',
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Header(
+            title: 'Settings',
+          ),
+          TextButton(
+            child: const Text('Set light mode'),
+            onPressed: () {
+              ref.read(themeModeProvider.notifier).setLightMode();
+            },
+          ),
+          TextButton(
+            child: const Text('Set dark mode'),
+            onPressed: () {
+              ref.read(themeModeProvider.notifier).setDarkMode();
+            },
+          ),
+          TextButton(
+            child: const Text('Toggle dark mode'),
+            onPressed: () {
+              ref.read(themeModeProvider.notifier).toggleMode();
+            },
+          ),
+          Text(ref.watch(themeModeProvider).toString()),
+          Divider(
+            thickness: 2,
+            endIndent: 26,
+            indent: 26,
+            color: Theme.of(context).primaryColor,
+          ),
+          Text(ref.watch(themeDataProvider).toString()),
+          TextButton(
+            child: const Text('Update theme Color'),
+            onPressed: () {
+              ref.read(themeDataProvider.notifier).updateColor();
+            },
+          ),
+          Divider(
+            thickness: 2,
+            endIndent: 26,
+            indent: 26,
+            color: Theme.of(context).primaryColor,
+          ),
+          SelectableText(getUserAgent()),
+          ElevatedButton(
+            onPressed: () {
+              SnackbarService().successSnack(context);
+            },
+            child: const Text("Snack"),
+          ),
+          Divider(
+            thickness: 2,
+            endIndent: 26,
+            indent: 26,
+            color: Theme.of(context).primaryColor,
+          ),
+          const UserInfoCard(),
+          Divider(
+            thickness: 2,
+            endIndent: 26,
+            indent: 26,
+            color: Theme.of(context).primaryColor,
+          ),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Consumer(builder: (context, ref, child) {
+                  return ElevatedButton(
+                    onPressed: () => ref.read(authProvider).signOut(),
+                    child: const Text('Logout'),
+                  );
+                }),
+                ElevatedButton(
+                  onPressed: () => context.push("/signin"),
+                  child: const Text("Log in"),
+                ),
+              ],
             ),
-            const Text('Settings'),
-            TextButton(
-              child: const Text('Set light mode'),
-              onPressed: () {
-                ref.read(themeModeProvider.notifier).setLightMode();
-              },
-            ),
-            TextButton(
-              child: const Text('Set dark mode'),
-              onPressed: () {
-                ref.read(themeModeProvider.notifier).setDarkMode();
-              },
-            ),
-            TextButton(
-              child: const Text('Toggle dark mode'),
-              onPressed: () {
-                ref.read(themeModeProvider.notifier).toggleMode();
-              },
-            ),
-            Text(ref.watch(themeModeProvider).toString()),
-            Divider(
-              thickness: 2,
-              endIndent: 26,
-              indent: 26,
-              color: Theme.of(context).primaryColor,
-            ),
-            Text(ref.watch(themeDataProvider).toString()),
-            TextButton(
-              child: const Text('Update theme Color'),
-              onPressed: () {
-                ref.read(themeDataProvider.notifier).updateColor();
-              },
-            ),
-            Divider(
-              thickness: 2,
-              endIndent: 26,
-              indent: 26,
-              color: Theme.of(context).primaryColor,
-            ),
-            SelectableText(getUserAgent()),
-            ElevatedButton(
-              onPressed: () {
-                SnackbarService().successSnack(context);
-              },
-              child: const Text("Snack"),
-            ),
-            Divider(
-              thickness: 2,
-              endIndent: 26,
-              indent: 26,
-              color: Theme.of(context).primaryColor,
-            ),
-            const UserInfoCard(),
-            Divider(
-              thickness: 2,
-              endIndent: 26,
-              indent: 26,
-              color: Theme.of(context).primaryColor,
-            ),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Consumer(builder: (context, ref, child) {
-                    return ElevatedButton(
-                      onPressed: () => ref.read(authProvider).signOut(),
-                      child: const Text('Logout'),
-                    );
-                  }),
-                  ElevatedButton(
-                    onPressed: () => context.push("/signin"),
-                    child: const Text("Log in"),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

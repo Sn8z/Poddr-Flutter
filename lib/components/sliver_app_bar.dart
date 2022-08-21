@@ -47,7 +47,7 @@ class CustomSliverBar extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.fromLTRB(12, 90, 12, 12),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +63,7 @@ class CustomSliverBar extends StatelessWidget {
                     description,
                     style: const TextStyle(
                       color: Colors.white70,
-                      fontSize: 16,
+                      fontSize: 12,
                     ),
                   ),
                   Row(

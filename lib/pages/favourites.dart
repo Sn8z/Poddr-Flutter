@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:poddr/components/base.dart';
 import 'package:poddr/components/card.dart';
+import 'package:poddr/components/list_item.dart';
 import 'package:poddr/components/sliver_app_bar.dart';
 import 'package:poddr/helpers/breakpoints.dart';
 import 'package:poddr/services/db_service.dart';
@@ -69,25 +70,32 @@ class FavouritesPage extends ConsumerWidget {
                   return SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
-                        return Card(
-                          child: ListTile(
-                            leading: IconButton(
-                              onPressed: () {
-                                context.push(
-                                    '/podcast?podcastUrl=${data[index]?['rss']}');
+                        final fav = data[index];
+                        return ListItemComponent(
+                          title: fav['title'],
+                          imgUrl: fav['image'],
+                          onTap: () {
+                            context.push('/podcast?podcastUrl=${fav['rss']}');
+                          },
+                          actions: [
+                            PopupMenuButton(
+                              itemBuilder: (context) {
+                                return [
+                                  PopupMenuItem(
+                                    child: IconButton(
+                                      onPressed: () {
+                                        ref
+                                            .read(favouritesProvider)
+                                            .removeFavourite(
+                                                data[index]?['rss']);
+                                      },
+                                      icon: const Icon(Icons.cancel_rounded),
+                                    ),
+                                  ),
+                                ];
                               },
-                              icon: const Icon(Icons.view_comfy),
                             ),
-                            title: Text(data[index]?['title']),
-                            trailing: IconButton(
-                              onPressed: () {
-                                ref
-                                    .read(favouritesProvider)
-                                    .removeFavourite(data[index]?['rss']);
-                              },
-                              icon: const Icon(Icons.cancel_rounded),
-                            ),
-                          ),
+                          ],
                         );
                       },
                       childCount: data.length,

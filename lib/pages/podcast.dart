@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:podcast_search/podcast_search.dart';
 import 'package:poddr/components/base.dart';
 import 'package:poddr/components/header.dart';
+import 'package:poddr/components/list_item.dart';
 import 'package:poddr/components/sliver_app_bar.dart';
 import 'package:poddr/services/api_service.dart';
 import 'package:poddr/services/audio_service.dart';
@@ -82,23 +83,24 @@ class PodcastWidget extends ConsumerWidget {
           delegate: SliverChildBuilderDelegate(
             (context, index) {
               Episode ep = podcast.episodes![index];
-              return Card(
-                child: ListTile(
-                  leading: const Icon(Icons.podcasts_rounded),
-                  title: Text(ep.title),
-                  trailing: IconButton(
-                    onPressed: () {
-                      ref.read(playbackProvider.notifier).loadAudio(
-                            url: podcast.episodes?[index].contentUrl ?? "",
-                            episode: podcast.episodes?[index].title ?? "",
-                            podcast: podcast.episodes?[index].author ?? "",
-                            imageUrl: podcast.episodes?[index].imageUrl ??
-                                podcast.image,
-                          );
-                    },
-                    icon: const Icon(Icons.play_arrow_rounded),
-                  ),
-                ),
+              return ListItemComponent(
+                title: ep.title,
+                subtitle: ep.description,
+                imgUrl: ep.imageUrl,
+                onTap: () {
+                  ref.read(playbackProvider.notifier).loadAudio(
+                        url: podcast.episodes?[index].contentUrl ?? "",
+                        episode: podcast.episodes?[index].title ?? "",
+                        podcast: podcast.episodes?[index].author ?? "",
+                        imageUrl:
+                            podcast.episodes?[index].imageUrl ?? podcast.image,
+                      );
+                },
+                actions: [
+                  IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.more_vert_rounded)),
+                ],
               );
             },
             childCount: podcast.episodes?.length,

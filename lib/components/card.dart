@@ -40,7 +40,6 @@ class _CardComponentState extends ConsumerState<CardComponent> {
         onTap: widget.onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInExpo,
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
             color: isHovered
