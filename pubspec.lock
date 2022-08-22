@@ -177,12 +177,12 @@ packages:
     source: hosted
     version: "0.0.9"
   dio:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: dio
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.6"
+    version: "4.0.4"
   eventify:
     dependency: transitive
     description:
@@ -315,7 +315,7 @@ packages:
     source: hosted
     version: "0.10.0"
   flutter_lints:
-    dependency: "direct dev"
+    dependency: "direct overridden"
     description:
       name: flutter_lints
       url: "https://pub.dartlang.org"
