@@ -10,6 +10,7 @@ class ListItemComponent extends ConsumerStatefulWidget {
     required this.onTap,
     this.imgUrl,
     this.actions = const [],
+    this.subActions = const [],
   }) : super(key: key);
 
   final String title;
@@ -17,6 +18,7 @@ class ListItemComponent extends ConsumerStatefulWidget {
   final void Function() onTap;
   final String? imgUrl;
   final List<Widget> actions;
+  final List<Widget> subActions;
 
   @override
   ConsumerState<ListItemComponent> createState() => _ListItemComponentState();
@@ -43,11 +45,12 @@ class _ListItemComponentState extends ConsumerState<ListItemComponent> {
         child: GestureDetector(
           onTap: widget.onTap,
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 100),
             clipBehavior: Clip.hardEdge,
             decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
               color: isHovered
-                  ? Theme.of(context).backgroundColor
+                  ? const Color.fromARGB(255, 35, 35, 35)
                   : Colors.transparent,
               boxShadow: isHovered
                   ? const [
@@ -61,56 +64,59 @@ class _ListItemComponentState extends ConsumerState<ListItemComponent> {
                     ]
                   : null,
             ),
-            child: Row(
-              children: [
-                SizedBox(
-                  height: 80,
-                  width: 80,
-                  child: CachedNetworkImage(
-                    imageUrl: widget.imgUrl ?? "https://picsum.photos/300",
-                    fit: BoxFit.contain,
-                    errorWidget: (context, url, error) {
-                      return Image.asset('assets/images/placeholder.png');
-                    },
-                    placeholder: (context, url) {
-                      return const CircularProgressIndicator();
-                    },
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.title,
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 16,
-                            overflow: TextOverflow.ellipsis,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  if (widget.imgUrl != null)
+                    Container(
+                      width: 120,
+                      height: 120,
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: CachedNetworkImage(imageUrl: widget.imgUrl!),
+                    ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.title,
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 16,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                        ),
-                        Text(
-                          widget.subtitle,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                            overflow: TextOverflow.ellipsis,
+                          Text(
+                            widget.subtitle,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            maxLines: 3,
                           ),
-                        ),
-                      ],
+                          Row(
+                            children: widget.subActions,
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: widget.actions,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: widget.actions,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

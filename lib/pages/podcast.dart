@@ -9,6 +9,7 @@ import 'package:poddr/components/sliver_app_bar.dart';
 import 'package:poddr/services/api_service.dart';
 import 'package:poddr/services/audio_service.dart';
 import 'package:poddr/services/db_service.dart';
+import 'package:poddr/services/dialog_service.dart';
 
 class PodcastPage extends ConsumerWidget {
   const PodcastPage({Key? key, this.url = ""}) : super(key: key);
@@ -83,23 +84,43 @@ class PodcastWidget extends ConsumerWidget {
           delegate: SliverChildBuilderDelegate(
             (context, index) {
               Episode ep = podcast.episodes![index];
-              return ListItemComponent(
-                title: ep.title,
-                subtitle: ep.description,
-                imgUrl: ep.imageUrl,
-                onTap: () {
-                  ref.read(playbackProvider.notifier).loadAudio(
-                        url: podcast.episodes?[index].contentUrl ?? "",
-                        episode: podcast.episodes?[index].title ?? "",
-                        podcast: podcast.episodes?[index].author ?? "",
-                        imageUrl:
-                            podcast.episodes?[index].imageUrl ?? podcast.image,
-                      );
-                },
-                actions: [
-                  IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.more_vert_rounded)),
+              return Column(
+                children: [
+                  ListItemComponent(
+                    title: ep.title,
+                    subtitle: ep.description,
+                    imgUrl: ep.imageUrl,
+                    onTap: () {
+                      ref.read(playbackProvider.notifier).loadAudio(
+                            url: podcast.episodes?[index].contentUrl ?? "",
+                            episode: podcast.episodes?[index].title ?? "",
+                            podcast: podcast.episodes?[index].author ?? "",
+                            imageUrl: podcast.episodes?[index].imageUrl ??
+                                podcast.image,
+                          );
+                    },
+                    actions: [
+                      IconButton(
+                          iconSize: 26,
+                          onPressed: () {},
+                          icon: const Icon(Icons.more_vert_rounded)),
+                    ],
+                    subActions: [
+                      IconButton(
+                        iconSize: 18,
+                        onPressed: () {
+                          DialogService().dialog(context);
+                        },
+                        icon: const Icon(Icons.info_outline_rounded),
+                      ),
+                      IconButton(
+                        iconSize: 18,
+                        onPressed: () {},
+                        icon: const Icon(Icons.circle_outlined),
+                      ),
+                    ],
+                  ),
+                  const Divider(),
                 ],
               );
             },

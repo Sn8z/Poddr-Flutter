@@ -13,6 +13,7 @@ import 'package:poddr/components/player/position.dart';
 import 'package:poddr/services/audio_service.dart';
 import 'package:poddr/services/snackbar_service.dart';
 import 'package:universal_platform/universal_platform.dart';
+import 'package:poddr/services/dialog_service.dart';
 
 class PlayerPage extends ConsumerWidget {
   const PlayerPage({Key? key}) : super(key: key);
@@ -136,7 +137,9 @@ class PlayerPage extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        DialogService().dialog(context);
+                      },
                       icon: const Icon(Icons.shuffle_rounded),
                     ),
                     Text(playerPlaybackRate.toString()),
