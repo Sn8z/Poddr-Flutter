@@ -44,7 +44,7 @@ class RouterNotifier extends ChangeNotifier {
         GoRoute(
           path: '/',
           name: 'root',
-          redirect: (_) {
+          redirect: (BuildContext context, GoRouterState state) {
             return '/charts';
           },
         ),
@@ -135,9 +135,9 @@ class RouterNotifier extends ChangeNotifier {
         GoRoute(
           path: '/signin',
           name: 'signin',
-          redirect: (state) {
+          redirect: (BuildContext context, GoRouterState state) {
             final loggedIn = ref.read(authProvider).isLoggedIn();
-            print(loggedIn);
+            debugPrint(loggedIn.toString());
             if (loggedIn) {
               return '/';
             } else {
