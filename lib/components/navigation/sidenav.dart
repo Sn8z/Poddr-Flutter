@@ -1,8 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:poddr/services/audio_service.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 
 class SideNav extends StatefulWidget {
   const SideNav({Key? key}) : super(key: key);
@@ -30,27 +31,29 @@ class _SideNavState extends State<SideNav> {
       ),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.asset(
+          SizedBox(
+            height: 80,
+            child: MoveWindow(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
                     'assets/images/logo.png',
                     height: 40,
                     width: 40,
                   ),
-                ),
-                const Text(
-                  "Poddr",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                  const SizedBox(
+                    width: 20,
                   ),
-                ),
-              ],
+                  const Text(
+                    "Poddr",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           Divider(

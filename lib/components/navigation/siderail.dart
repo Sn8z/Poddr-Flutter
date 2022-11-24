@@ -1,3 +1,4 @@
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -38,16 +39,18 @@ class SideRail extends ConsumerWidget {
         children: [
           AspectRatio(
             aspectRatio: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/images/logo.png',
-                  height: 40,
-                  width: 40,
-                ),
-              ],
+            child: MoveWindow(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/images/logo.png',
+                    height: 40,
+                    width: 40,
+                  ),
+                ],
+              ),
             ),
           ),
           Divider(

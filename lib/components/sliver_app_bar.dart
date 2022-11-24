@@ -66,9 +66,6 @@ class CustomSliverBar extends StatelessWidget {
                       fontSize: 12,
                     ),
                   ),
-                  Row(
-                    children: actions,
-                  )
                 ],
               ),
             )

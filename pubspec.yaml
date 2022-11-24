@@ -28,6 +28,7 @@ dependencies:
   audio_session: ^0.1.10
   cached_network_image: ^3.2.1
   cloud_firestore: ^3.4.5
+  bitsdojo_window: ^0.1.5
 
 dev_dependencies:
   flutter_launcher_icons: ^0.11.0

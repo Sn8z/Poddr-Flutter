@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:universal_platform/universal_platform.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 
 // Services
 import 'package:poddr/services/theme_service.dart';
@@ -37,6 +38,14 @@ Future<void> main() async {
       child: Poddr(),
     ),
   );
+
+  doWhenWindowReady(() {
+    const initialSize = Size(600, 450);
+    appWindow.minSize = initialSize;
+    appWindow.size = initialSize;
+    appWindow.alignment = Alignment.center;
+    appWindow.show();
+  });
 }
 
 class Poddr extends ConsumerWidget {
