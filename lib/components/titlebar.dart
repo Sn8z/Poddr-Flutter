@@ -1,5 +1,6 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class Titlebar extends StatelessWidget {
   const Titlebar({super.key});
@@ -32,28 +33,30 @@ class Titlebar extends StatelessWidget {
         iconNormal: iconNormal,
         iconMouseOver: Colors.white);
 
-    return WindowTitleBarBox(
-      child: Container(
-        color: Theme.of(context).brightness == Brightness.dark
-            ? Colors.grey.shade900
-            : Colors.grey.shade300,
-        child: Row(
-          children: [
-            Expanded(
-              child: MoveWindow(),
+    return UniversalPlatform.isDesktop
+        ? WindowTitleBarBox(
+            child: Container(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.grey.shade900
+                  : Colors.grey.shade300,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: MoveWindow(),
+                  ),
+                  MinimizeWindowButton(
+                    colors: buttonColors,
+                  ),
+                  MaximizeWindowButton(
+                    colors: buttonColors,
+                  ),
+                  CloseWindowButton(
+                    colors: closeButtonColors,
+                  ),
+                ],
+              ),
             ),
-            MinimizeWindowButton(
-              colors: buttonColors,
-            ),
-            MaximizeWindowButton(
-              colors: buttonColors,
-            ),
-            CloseWindowButton(
-              colors: closeButtonColors,
-            ),
-          ],
-        ),
-      ),
-    );
+          )
+        : Container();
   }
 }
