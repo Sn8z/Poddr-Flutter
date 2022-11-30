@@ -26,7 +26,6 @@ class ApiService {
   Future<SearchResult> search(String query) {
     return podcastSearch.search(
       query,
-      country: Country.SWEDEN,
       explicit: true,
       limit: 30,
     );
@@ -34,7 +33,6 @@ class ApiService {
 
   Future<SearchResult> charts() {
     return podcastSearch.charts(
-      country: Country.SWEDEN,
       explicit: true,
       limit: 30,
     );

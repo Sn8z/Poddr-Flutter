@@ -88,7 +88,6 @@ class PodcastWidget extends ConsumerWidget {
                 children: [
                   ListItemComponent(
                     title: ep.title,
-                    subtitle: ep.description,
                     imgUrl: ep.imageUrl,
                     onTap: () {
                       ref.read(playbackProvider.notifier).loadAudio(

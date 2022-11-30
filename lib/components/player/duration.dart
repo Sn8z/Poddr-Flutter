@@ -12,7 +12,8 @@ class DurationTimer extends ConsumerWidget {
     return Text(
       playerDuration,
       style: const TextStyle(
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.normal,
+        fontSize: 12,
       ),
     );
   }

@@ -29,7 +29,7 @@ class _ListItemComponentState extends ConsumerState<ListItemComponent> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(4.0),
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
         onEnter: (_) {
@@ -52,17 +52,6 @@ class _ListItemComponentState extends ConsumerState<ListItemComponent> {
               color: isHovered
                   ? const Color.fromARGB(255, 35, 35, 35)
                   : Colors.transparent,
-              boxShadow: isHovered
-                  ? const [
-                      BoxShadow(
-                        blurRadius: 12,
-                        color: Colors.black,
-                        blurStyle: BlurStyle.outer,
-                        offset: Offset(0, 0),
-                        spreadRadius: 0,
-                      )
-                    ]
-                  : null,
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -70,8 +59,8 @@ class _ListItemComponentState extends ConsumerState<ListItemComponent> {
                 children: [
                   if (widget.imgUrl != null)
                     Container(
-                      width: 120,
-                      height: 120,
+                      width: 80,
+                      height: 80,
                       clipBehavior: Clip.hardEdge,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
@@ -90,7 +79,7 @@ class _ListItemComponentState extends ConsumerState<ListItemComponent> {
                             style: TextStyle(
                               color: Theme.of(context).primaryColor,
                               fontSize: 16,
-                              overflow: TextOverflow.ellipsis,
+                              overflow: TextOverflow.fade,
                             ),
                           ),
                           Text(
@@ -98,7 +87,7 @@ class _ListItemComponentState extends ConsumerState<ListItemComponent> {
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 12,
-                              overflow: TextOverflow.ellipsis,
+                              overflow: TextOverflow.fade,
                             ),
                             maxLines: 3,
                           ),
@@ -110,7 +99,7 @@ class _ListItemComponentState extends ConsumerState<ListItemComponent> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(4.0),
                     child: Row(
                       children: widget.actions,
                     ),

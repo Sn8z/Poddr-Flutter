@@ -42,32 +42,28 @@ class _CardComponentState extends ConsumerState<CardComponent> {
           duration: const Duration(milliseconds: 100),
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
             color: isHovered
-                ? Theme.of(context).backgroundColor
+                ? const Color.fromARGB(255, 35, 35, 35)
                 : Colors.transparent,
-            boxShadow: isHovered
-                ? const [
-                    BoxShadow(
-                      blurRadius: 12,
-                      color: Colors.black,
-                      blurStyle: BlurStyle.outer,
-                      offset: Offset(0, 0),
-                      spreadRadius: 0,
-                    )
-                  ]
-                : null,
           ),
           child: Column(
             children: [
-              CachedNetworkImage(
-                imageUrl: widget.imgUrl ?? "https://picsum.photos/300",
-                fit: BoxFit.contain,
-                errorWidget: (context, url, error) {
-                  return Image.asset('assets/images/placeholder.png');
-                },
-                placeholder: (context, url) {
-                  return const CircularProgressIndicator();
-                },
+              Container(
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: CachedNetworkImage(
+                  imageUrl: widget.imgUrl ?? "https://picsum.photos/300",
+                  fit: BoxFit.contain,
+                  errorWidget: (context, url, error) {
+                    return Image.asset('assets/images/placeholder.png');
+                  },
+                  placeholder: (context, url) {
+                    return const CircularProgressIndicator();
+                  },
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),

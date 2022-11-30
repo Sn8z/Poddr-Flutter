@@ -12,27 +12,7 @@ class Header extends StatefulWidget {
 class _HeaderState extends State<Header> {
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    return Container(
-      height: 60,
-      width: screenWidth,
-      decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark
-            ? const Color.fromARGB(255, 30, 30, 30)
-            : const Color.fromARGB(255, 220, 220, 220),
-        boxShadow: const [
-          BoxShadow(
-            offset: Offset(10, 0),
-            blurRadius: 12.0,
-            blurStyle: BlurStyle.outer,
-          ),
-        ],
-      ),
-      padding: const EdgeInsets.only(
-        left: 16,
-        right: 16,
-      ),
+    return Flexible(
       child: Row(
         children: [
           Expanded(
@@ -42,7 +22,7 @@ class _HeaderState extends State<Header> {
                 Text(
                   widget.title,
                   style: const TextStyle(
-                    fontSize: 24,
+                    fontSize: 48,
                     fontWeight: FontWeight.bold,
                     overflow: TextOverflow.fade,
                   ),

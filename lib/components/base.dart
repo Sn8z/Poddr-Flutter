@@ -24,24 +24,18 @@ class BaseWidget extends StatelessWidget {
           child: LayoutBuilder(
             builder: (context, constraints) {
               if (constraints.maxWidth > Breakpoints.desktopScreen) {
-                return Row(
+                return Column(
                   children: [
-                    const SideNav(),
                     Expanded(
-                      child: Column(
+                      child: Row(
                         children: [
-                          const Titlebar(),
+                          const SideNav(),
                           Expanded(
-                            child: Stack(
+                            child: Column(
                               children: [
-                                Positioned.fill(
+                                const Titlebar(),
+                                Expanded(
                                   child: child,
-                                ),
-                                const Positioned(
-                                  bottom: 0,
-                                  left: 0,
-                                  right: 0,
-                                  child: DesktopPlayer(),
                                 ),
                               ],
                             ),
@@ -49,6 +43,7 @@ class BaseWidget extends StatelessWidget {
                         ],
                       ),
                     ),
+                    const DesktopPlayer(),
                   ],
                 );
               } else if (constraints.maxWidth > Breakpoints.tabletScreen) {
@@ -60,20 +55,9 @@ class BaseWidget extends StatelessWidget {
                         children: [
                           const Titlebar(),
                           Expanded(
-                            child: Stack(
-                              children: [
-                                Positioned.fill(
-                                  child: child,
-                                ),
-                                const Positioned(
-                                  bottom: 0,
-                                  left: 0,
-                                  right: 0,
-                                  child: DesktopPlayer(),
-                                ),
-                              ],
-                            ),
+                            child: child,
                           ),
+                          const DesktopPlayer(),
                         ],
                       ),
                     ),

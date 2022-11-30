@@ -12,7 +12,8 @@ class PositionTimer extends ConsumerWidget {
     return Text(
       playerPosition,
       style: const TextStyle(
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.normal,
+        fontSize: 12,
       ),
     );
   }

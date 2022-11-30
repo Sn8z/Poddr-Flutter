@@ -14,6 +14,8 @@ class CurrentEpisodeText extends ConsumerWidget {
       style: const TextStyle(
         fontSize: 16,
       ),
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
     );
   }
 }

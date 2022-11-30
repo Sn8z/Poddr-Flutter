@@ -1,11 +1,11 @@
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:poddr/components/base.dart';
 import 'package:poddr/components/card.dart';
+import 'package:poddr/components/header.dart';
 import 'package:poddr/components/list_item.dart';
 import 'package:poddr/components/sliver_app_bar.dart';
 import 'package:poddr/helpers/breakpoints.dart';
@@ -22,22 +22,7 @@ class FavouritesPage extends ConsumerWidget {
         if (constraints.maxWidth > Breakpoints.tabletScreen) {
           return Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Favourites',
-                    style: TextStyle(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white
-                          : Colors.black,
-                      fontSize: 50,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
+              const Header(title: 'Favourites'),
               Expanded(
                 child: GridView.count(
                   controller: ScrollController(),

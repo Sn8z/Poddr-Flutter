@@ -96,7 +96,7 @@ class SideRail extends ConsumerWidget {
                 },
               );
             },
-          )
+          ),
         ],
       ),
     );
